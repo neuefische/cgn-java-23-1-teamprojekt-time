@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -15,4 +16,8 @@ public class TaskRepo {
     public List<Task> getAllTasks(){
         return taskMap.values().stream().toList();
     }
+
+    public Optional<Task> getTaskById(String id){ return Optional.ofNullable(taskMap.get(id));}
+
+
 }
