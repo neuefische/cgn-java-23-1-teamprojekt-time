@@ -1,24 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
 import './App.css';
+import {Task} from "./model/Task";
+import axios from "axios";
+import {Route, Routes} from "react-router-dom";
+import TasksGallery from "./component/TasksGallery";
 
 function App() {
+  const [tasks,setTasks]=useState<Task[]>([]);
+
+  function loadAllTasks(){
+  axios.get("/api/tasks")
+      .then(response=>response.data)
+      .then(setTasks)
+      .catch(console.error)
+  }
+  useEffect(()=> {
+      loadAllTasks()
+  },[])
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
       </header>
+       <Routes>
+           <Route path={"/tasks"} element={<TasksGallery tasks={tasks}/>}/>
+       </Routes>
     </div>
   );
 }
