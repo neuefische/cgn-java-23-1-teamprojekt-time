@@ -15,25 +15,7 @@ function App() {
       .catch(console.error)
   }
   useEffect(()=> {
-      // loadAllTasks()
-      const fakeJson: Task[] = [
-          {
-              id: "1",
-              title: "Erster Task",
-              dateTime: new Date()
-          },
-          {
-              id: "2",
-              title: "Zweiter Task",
-              dateTime: new Date()
-          },
-          {
-              id: "3",
-              title: "Dritter Task",
-              dateTime: new Date()
-          },
-      ];
-      setTasks(fakeJson);
+      loadAllTasks()
   },[])
 
   return (
