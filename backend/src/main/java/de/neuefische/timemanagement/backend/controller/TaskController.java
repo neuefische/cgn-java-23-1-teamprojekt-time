@@ -11,11 +11,11 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/tasks")
 public class TaskController {
     private final TaskService taskService;
 
-    @GetMapping("/tasks")
+    @GetMapping("/")
     public List<Task> getAllTasks(){
         return taskService.getAllTasks();
     }
