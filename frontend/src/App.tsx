@@ -31,6 +31,22 @@ function App() {
           .catch(console.error)
   }
 
+  function updateTask(task:Task){
+      return axios.put("/api/tasks/"+task.id,task)
+          .then(response=>{
+              setTasks(prevState => {
+                      return prevState.map(currentTask=>{
+                          if (currentTask.id===task.id){
+                              return response.data
+                          }
+                          return currentTask
+                      })
+                  }
+              )
+          })
+          .catch(console.error)
+  }
+
   useEffect(()=> {
       loadAllTasks()
   },[])
@@ -40,6 +56,7 @@ function App() {
        <Routes>
            <Route path={"/tasks"} element={<TasksGallery tasks={tasks}/>}/>
            <Route path={"/addtask"} element={<AddTask onAdd={postNewTask}/>}/>
+           <Route path={"/:id/update"} />
        </Routes>
     </div>
   );
