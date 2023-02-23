@@ -5,6 +5,8 @@ import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.InputMismatchException;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 @Service
@@ -19,8 +21,13 @@ public class TaskService {
     }
 
     public Task addTask(Task newTask){
+        if(newTask.title()==null||newTask.title()==""||newTask.dateTime()==null){
+            throw new IllegalArgumentException("missing title or date");
+        }
         String id= idService.generateId();
         Task newTaskWithId = new Task(id, newTask.title(), newTask.dateTime());
         return taskRepo.addTask(newTaskWithId);
     }
+
+
 }

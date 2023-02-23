@@ -53,4 +53,19 @@ class TaskControllerTest {
                 )).andExpect(jsonPath("$.id").isNotEmpty());
     }
 
+
+
+    @Test
+    @DirtiesContext
+    void addTaskNotValidDateTime() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/tasks/")
+                        .contentType(MediaType.APPLICATION_JSON).content("""               
+                                {"id": null, "title": "task 1","dateTime": "Non valid DateTime" }
+                                    """))
+                .andExpect(status().isBadRequest());
+    }
+
+
+
+
 }

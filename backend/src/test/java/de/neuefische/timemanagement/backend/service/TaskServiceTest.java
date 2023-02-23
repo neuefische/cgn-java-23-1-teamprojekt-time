@@ -61,5 +61,17 @@ class TaskServiceTest {
 
     }
 
+    @Test
+    void addTask_MissingTitle(){
+        //GIVEN
+        when(idService.generateId()).thenReturn("Whatever Id");
+        Task invalidTaskWithId= new Task("Whatever Id",null,task1.dateTime());
+
+        //WHEN & THEN
+        assertThrows(IllegalArgumentException.class,()->{taskService.addTask(invalidTaskWithId);});
+
+    }
+
+
 
 }
