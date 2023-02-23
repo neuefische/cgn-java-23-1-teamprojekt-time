@@ -21,7 +21,7 @@ public class TaskService {
     }
 
     public Task addTask(Task newTask){
-        if(newTask.title()==null||newTask.title()==""||newTask.dateTime()==null){
+        if(newTask.title()==null ||newTask.title().equals("") ||newTask.dateTime()==null){
             throw new IllegalArgumentException("missing title or date");
         }
         String id= idService.generateId();
