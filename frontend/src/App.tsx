@@ -4,8 +4,6 @@ import {NewTask, Task} from "./model/Task";
 import axios from "axios";
 import {Route, Routes} from "react-router-dom";
 import TasksGallery from "./component/TasksGallery";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 import AddTask from "./component/AddTask";
 
 function App() {
@@ -13,7 +11,14 @@ function App() {
 
   function loadAllTasks(){
   axios.get("/api/tasks/")
-      .then(response=>response.data.map(task=>({id:task.id,title:task.title,dateTime:new Date(task.dateTime)})))
+      .then(response => response.data
+          .map((task: { dateTime: string; }) =>
+              ({
+                  ...task,
+                  dateTime:new Date(task.dateTime)
+              })
+          )
+      )
       .then(setTasks)
       .catch(console.error)
   }
