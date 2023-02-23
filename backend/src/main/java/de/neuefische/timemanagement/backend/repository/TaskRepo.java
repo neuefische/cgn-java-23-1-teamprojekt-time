@@ -18,7 +18,9 @@ public class TaskRepo {
 
     public Task addTask(Task newTask){
         taskMap.put(newTask.id(),newTask);
-        return newTask;}
-
-
+        return newTask;
+    }
+    public Task updateTask(Task task){
+        return taskMap.replace(task.id(),task);
+    }
 }

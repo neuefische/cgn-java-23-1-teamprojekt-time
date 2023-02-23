@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -69,9 +70,30 @@ class TaskServiceTest {
 
         //WHEN & THEN
         assertThrows(IllegalArgumentException.class,()->{taskService.addTask(invalidTaskWithId);});
-
     }
-
-
-
+    @Test
+    void updateTask(){
+        //GIVEN
+        when(taskRepo.updateTask(task1)).thenReturn(task1);
+        //WHEN
+        Task actual=taskService.updateTask(task1.id(),task1);
+        Task expected=task1;
+        //THEN
+        verify(taskRepo).updateTask(task1);
+        Assertions.assertEquals(expected,actual);
+    }
+    @Test
+    void updateTask_idMissMatch(){
+        //GIVEN
+        when(taskRepo.updateTask(task1)).thenReturn(task1);
+        //WHEN & THEN
+        assertThrows(IllegalArgumentException.class,()->{taskService.updateTask("3",task1);});
+    }
+    @Test
+    void updateTask_idDoesntExist(){
+        //GIVEN
+        when(taskRepo.updateTask(task1)).thenReturn(null);
+        //WHEN & THEN
+        assertThrows(NoSuchElementException.class,()->{taskService.updateTask(task1.id(),task1);});
+    }
 }
