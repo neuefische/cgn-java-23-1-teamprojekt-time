@@ -12,8 +12,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.boot.test.mock.mockito.MockReset.before;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -32,7 +30,7 @@ class TaskControllerTest {
     @Test
     @DirtiesContext
     void getAllTasks() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         "[]"));
