@@ -39,7 +39,7 @@ function App() {
     <div className="App">
        <Routes>
            <Route path={"/tasks"} element={<TasksGallery tasks={tasks}/>}/>
-           <Route path={"/addTask"} element={<AddTask onAdd={postNewTask}/>}/>
+           <Route path={"/addtask"} element={<AddTask onAdd={postNewTask}/>}/>
        </Routes>
     </div>
   );

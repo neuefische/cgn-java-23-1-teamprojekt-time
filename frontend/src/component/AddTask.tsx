@@ -1,5 +1,6 @@
 import {ChangeEvent, FormEvent, useState} from "react";
 import {NewTask} from "../model/Task";
+import './AddTask.css'
 
 type Props = {
      onAdd:(newTask:NewTask)=>Promise<void>
@@ -33,15 +34,15 @@ export default function AddTask(props:Props){
     return(
         <>
         <h2>Add New Task</h2>
-        <form onSubmit={formSubmitHandler}>
+        <form onSubmit={formSubmitHandler} className={"add-task"}>
             <label>
-                Title :
+                Title:
                 <input type={"text"} onChange={handleTitleChange} value={title} placeholder={"Have a long break"}required={true}/>
             </label>
-            <label>Please select date and time :
+            <label>Please select date and time:
                 <input type={"datetime-local"} onChange={handleDateTimeChange} value={dateTime.toISOString().slice(0,-5)}required={true}/>
             </label>
-            <button type={"submit"}>save</button>
+            <button type={"submit"}>Save</button>
         </form>
         </>
     )
