@@ -12,8 +12,15 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepo taskRepo;
+    private final IdService idService;
 
     public List<Task> getAllTasks(){
         return taskRepo.getAllTasks();
+    }
+
+    public Task addTask(Task newTask){
+        String id= idService.generateId();
+        Task newTaskWithId = new Task(id, newTask.title(), newTask.dateTime());
+        return taskRepo.addTask(newTaskWithId);
     }
 }

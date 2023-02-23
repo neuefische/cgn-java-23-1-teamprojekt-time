@@ -15,4 +15,10 @@ public class TaskRepo {
     public List<Task> getAllTasks(){
         return taskMap.values().stream().toList();
     }
+
+    public Task addTask(Task newTask){
+        taskMap.put(newTask.id(),newTask);
+        return newTask;}
+
+
 }
