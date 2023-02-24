@@ -1,6 +1,7 @@
 import {Task} from "../model/Task";
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import moment from "moment";
 
 type Props = {
     onSubmit: (task: Task) => Promise<void>,
@@ -12,13 +13,7 @@ type Props = {
 export default function TaskForm(props: Props) {
     const [title, setTitle] = useState<string>(props.task.title)
     const [dateTime, setDateTime] = useState<Date>(props.task.dateTime)
-    const [dateTimeString, setDateTimeString] = useState("");
     const navigate=useNavigate()
-
-    useEffect(() => {
-            const d = new Date(dateTime.valueOf() - dateTime.getTimezoneOffset() * 60000);
-            setDateTimeString(d.toISOString().slice(0, -5));
-    }, [dateTime]);
 
     function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
         setTitle(event.target.value)
@@ -57,7 +52,7 @@ export default function TaskForm(props: Props) {
             </label>
             <label>Please select date and time:
                 <input type={"datetime-local"} onChange={handleDateTimeChange}
-                       value={dateTimeString} required={true}/>
+                       value={moment(dateTime).format("YYYY-MM-DDTHH:mm")} required={true}/>
             </label>
             <button type={"submit"}>
                 {props.action === "add" && "Save"}
