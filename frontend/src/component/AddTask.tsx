@@ -1,9 +1,9 @@
-import {NewTask} from "../model/Task";
+import {Task} from "../model/Task";
 import './AddTask.css'
 import TaskForm from "./TaskForm";
 
 type Props = {
-    onAdd: (newTask: NewTask) => Promise<void>
+    onAdd: (newTask: Task) => Promise<void>
 }
 
 export default function AddTask(props: Props) {
@@ -13,8 +13,7 @@ export default function AddTask(props: Props) {
             <h2>Add New Task</h2>
             <TaskForm
                 onSubmit={props.onAdd}
-                title={""}
-                dateTime={new Date()}
+                task={{title: "", dateTime: new Date()}}
                 action={"add"}
             />
         </>

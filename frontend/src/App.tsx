@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {NewTask, Task} from "./model/Task";
+import {Task} from "./model/Task";
 import axios from "axios";
 import {Route, Routes} from "react-router-dom";
 import TasksGallery from "./component/TasksGallery";
@@ -24,7 +24,7 @@ function App() {
       .catch(console.error)
   }
 
-  function postNewTask(newTask:NewTask){
+  function postNewTask(newTask: Task){
      return axios.post("/api/tasks/",newTask)
           .then(response=>{
               setTasks(prevState => [...prevState,response.data])
