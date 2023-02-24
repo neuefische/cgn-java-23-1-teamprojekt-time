@@ -4,3 +4,5 @@ export type  Task={
     title:string,
     dateTime:Date
 }
+
+export type NewTask = Omit<Task, "id">
