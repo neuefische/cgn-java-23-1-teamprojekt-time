@@ -1,17 +1,19 @@
 import {Task} from "../model/Task";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 type Props = {
     onSubmit: (task: Task) => Promise<void>,
     task: Task
     action: "add" | "update"
+    navigateTo:string | undefined
 }
-
 
 export default function TaskForm(props: Props) {
     const [title, setTitle] = useState<string>(props.task.title)
     const [dateTime, setDateTime] = useState<Date>(props.task.dateTime)
     const [dateTimeString, setDateTimeString] = useState("");
+    const navigate=useNavigate()
 
     useEffect(() => {
             const d = dateTime;
@@ -42,6 +44,9 @@ export default function TaskForm(props: Props) {
             .then(() => {
                 setTitle("")
                 setDateTime(new Date())
+                if(props.navigateTo){
+                    navigate(props.navigateTo)
+                }
             })
     }
 

@@ -11,7 +11,7 @@ export default function AddTask(props: Props) {
     return (
         <>
             <h2>Add New Task</h2>
-            <TaskForm
+            <TaskForm navigateTo={"/tasks"}
                 onSubmit={props.onAdd}
                 task={{title: "", dateTime: new Date()}}
                 action={"add"}

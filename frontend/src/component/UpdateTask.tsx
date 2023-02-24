@@ -33,10 +33,12 @@ export default function UpdateTask(props: Props) {
         )
     }
 
+
+
     return (
         <>
             <h2>Update Task</h2>
-            <TaskForm
+            <TaskForm navigateTo={"/tasks"}
                 onSubmit={props.onUpdate}
                 task={task}
                 action={"update"}
