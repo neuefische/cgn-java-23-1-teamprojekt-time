@@ -4,7 +4,6 @@ import de.neuefische.timemanagement.backend.model.Task;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +12,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -28,7 +28,7 @@ class TaskControllerTest {
 
     @BeforeEach
     void setUp() {
-        LocalDateTime today= LocalDateTime.now();
+        ZonedDateTime today= ZonedDateTime.now().truncatedTo(ChronoUnit.MILLIS);
         task1=new Task("1", "task 1",today );
     }
 
@@ -51,7 +51,7 @@ class TaskControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         """                        
-                                {"title": "task 1","dateTime": "2023-02-23T09:32:27.325" }
+                                {"title": "task 1","dateTime": "2023-02-23T09:32:27.325Z" }
                                     """
                 )).andExpect(jsonPath("$.id").isNotEmpty());
     }
@@ -86,7 +86,7 @@ class TaskControllerTest {
                         {
                         "id": "1",
                         "title": "task updated",
-                        "dateTime":"2023-02-23T09:32:27.325"
+                        "dateTime":"2023-02-23T09:32:27.325Z"
                         }
                         """));
     }
