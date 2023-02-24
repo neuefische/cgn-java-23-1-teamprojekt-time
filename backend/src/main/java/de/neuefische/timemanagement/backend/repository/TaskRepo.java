@@ -17,6 +17,12 @@ public class TaskRepo {
         return taskMap.values().stream().toList();
     }
 
+    public Task addTask(Task newTask){
+        taskMap.put(newTask.id(),newTask);
+        return newTask;}
+
+
+
     public Optional<Task> getTaskById(String id){ return Optional.ofNullable(taskMap.get(id));}
 
 
