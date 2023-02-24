@@ -6,11 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 @Service
 @RequiredArgsConstructor
 public class TaskService {
-
     private final TaskRepo taskRepo;
     private final IdService idService;
 
@@ -27,9 +25,8 @@ public class TaskService {
         return taskRepo.addTask(newTaskWithId);
     }
 
-
-}
-    public Task getTaskById(String id){ return taskRepo.getTaskById(id).orElseThrow(NoSuchElementException::new);}
-
+    public Task getTaskById(String id){
+        return taskRepo.getTaskById(id).orElseThrow(NoSuchElementException::new);
+    }
 
     }
