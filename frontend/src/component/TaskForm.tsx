@@ -16,8 +16,7 @@ export default function TaskForm(props: Props) {
     const navigate=useNavigate()
 
     useEffect(() => {
-            const d = dateTime;
-            d.setTime(d.getTime() - new Date().getTimezoneOffset() * 60 * 1000);
+            const d = new Date(dateTime.valueOf() - dateTime.getTimezoneOffset() * 60000);
             const dtString = d.toISOString().slice(0, -5);
             setDateTimeString(dtString);
     }, [dateTime]);
@@ -49,8 +48,6 @@ export default function TaskForm(props: Props) {
                 }
             })
     }
-
-    console.log(dateTime)
 
     return (
         <form onSubmit={formSubmitHandler} className={"add-task"}>
