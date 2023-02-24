@@ -2,10 +2,10 @@ import {NewTask} from "../model/Task";
 import {ChangeEvent, FormEvent, useState} from "react";
 
 type Props = {
-    onAdd:(newTask:NewTask)=>Promise<void>
+    onSubmit:(newTask:NewTask)=>Promise<void>
     title : string
     dateTime : Date
-    action:"add"|"Update"
+    action: "add" | "update"
 }
 
 
@@ -25,9 +25,10 @@ export default function TaskForm (props:Props){
     function formSubmitHandler(event:FormEvent<HTMLFormElement>){
         event.preventDefault()
         const newTask : NewTask = {
-            title,dateTime
+            title,
+            dateTime
         }
-        props.onAdd(newTask)
+        props.onSubmit(newTask)
             .then(()=>{
                 setTitle("")
                 setDateTime(new Date())
@@ -37,12 +38,15 @@ export default function TaskForm (props:Props){
        <form onSubmit={formSubmitHandler} className={"add-task"}>
            <label>
                Title:
-               <input type={"text"} onChange={handleTitleChange} value={title} placeholder={"Have a long break"}required={true}/>
+               <input type={"text"} onChange={handleTitleChange} value={title} placeholder={"Have a long break"} required={true}/>
            </label>
            <label>Please select date and time:
-               <input type={"datetime-local"} onChange={handleDateTimeChange} value={dateTime.toISOString().slice(0,-5)}required={true}/>
+               <input type={"datetime-local"} onChange={handleDateTimeChange} value={dateTime.toISOString().slice(0,-5)} required={true}/>
            </label>
-           <button type={"submit"}>{props.action=="add"&& "Save"}{props.action=="Update"&& "Update"}</button>
+           <button type={"submit"}>
+               {props.action==="add" && "Save"}
+               {props.action==="update" && "Update"}
+           </button>
        </form>
    )
 }
