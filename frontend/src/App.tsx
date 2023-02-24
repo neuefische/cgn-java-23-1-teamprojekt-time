@@ -5,6 +5,7 @@ import axios from "axios";
 import {Route, Routes} from "react-router-dom";
 import TasksGallery from "./component/TasksGallery";
 import AddTask from "./component/AddTask";
+import UpdateTask from "./component/UpdateTask";
 
 function App() {
   const [tasks,setTasks]=useState<Task[]>([]);
@@ -55,8 +56,8 @@ function App() {
     <div className="App">
        <Routes>
            <Route path={"/tasks"} element={<TasksGallery tasks={tasks}/>}/>
-           <Route path={"/addtask"} element={<AddTask onAdd={postNewTask}/>}/>
-           <Route path={"/:id/update"} />
+           <Route path={"/tasks/add"} element={<AddTask onAdd={postNewTask}/>}/>
+           <Route path={"/tasks/:id/update"} element={<UpdateTask tasks={tasks} onUpdate={updateTask} />} />
        </Routes>
     </div>
   );
