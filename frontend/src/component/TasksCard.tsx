@@ -6,7 +6,7 @@ type Props={
     task:Task
 }
 export default function TasksCard(props:Props){
-    console.log(props)
+
    return(
        <div className={"task-card"}>
            <h2>{props.task.title}</h2>
