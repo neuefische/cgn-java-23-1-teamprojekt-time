@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {NewTask, Task} from "../model/Task";
-import axios from "axios/index";
+import axios from "axios";
+
 
 
 
