@@ -17,8 +17,7 @@ export default function TaskForm(props: Props) {
 
     useEffect(() => {
             const d = new Date(dateTime.valueOf() - dateTime.getTimezoneOffset() * 60000);
-            const dtString = d.toISOString().slice(0, -5);
-            setDateTimeString(dtString);
+            setDateTimeString(d.toISOString().slice(0, -5));
     }, [dateTime]);
 
     function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {

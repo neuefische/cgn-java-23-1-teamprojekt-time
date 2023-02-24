@@ -25,13 +25,9 @@ function App() {
   }
 
   function postNewTask(newTask: Task){
-      console.log("SENDING")
-      console.log(newTask)
      return axios.post("/api/tasks/",newTask)
           .then(response=>
           {
-              console.log("RECEIVING")
-              console.log(response.data)
               const returnedTask ={
                   ...response.data,
                   dateTime:new Date(response.data.dateTime)
