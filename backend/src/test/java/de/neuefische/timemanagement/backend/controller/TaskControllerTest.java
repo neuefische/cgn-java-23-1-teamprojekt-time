@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,7 +29,8 @@ class TaskControllerTest {
 
     @BeforeEach
     void setUp() {
-        LocalDateTime today = LocalDateTime.now();
+
+        LocalDateTime today = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
         task1 = new Task("1", "task 1", today);
 
     }
@@ -70,14 +73,12 @@ class TaskControllerTest {
     @DirtiesContext
     void getTaskById() throws Exception {
         taskRepo.addTask(task1);
-        String dateString= task1.dateTime().toString();
-        dateString=dateString.substring(0,dateString.length()-2);
             mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/1"))
                     .andExpect(status().isOk())
                     .andExpect(content().json(
                             """                        
                                     { "id":"1","title": "task 1","dateTime": "%s"}
-                                        """.formatted(dateString)
+                                        """.formatted(task1.dateTime())
                     ));
 
     }

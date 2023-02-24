@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Task} from "../model/Task";
+import {NewTask, Task} from "../model/Task";
 import axios from "axios";
 
 
@@ -21,7 +21,7 @@ function loadAllTasks(){
         .catch(console.error)
 }
 
-    function postNewTask(newTask: Task){
+    function postNewTask(newTask: NewTask){
         return axios.post("/api/tasks/",newTask)
             .then(response=>{
                 const returnedTask ={
