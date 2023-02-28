@@ -5,10 +5,7 @@ import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.InputMismatchException;
-import java.util.InvalidPropertiesFormatException;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +15,7 @@ public class TaskService {
     private final IdService idService;
 
     public List<Task> getAllTasks(){
-        return taskRepo.getAllTasks();
+        return taskRepo.findAll();
     }
 
     public Task addTask(Task newTask){
@@ -27,16 +24,16 @@ public class TaskService {
         }
         String id= idService.generateId();
         Task newTaskWithId = new Task(id, newTask.title(), newTask.dateTime());
-        return taskRepo.addTask(newTaskWithId);
+        return taskRepo.save(newTaskWithId);
     }
     public Task updateTask(String id,Task task){
         if (!task.id().equals(id)) {
             throw new IllegalArgumentException("Id don't match");
         }
-        Task oldTask=taskRepo.updateTask(task);
-        if(oldTask==null){
+
+        if(!taskRepo.existsById(id)){
             throw new NoSuchElementException("Task with id "+id +"doesn't exist");
         }
-        return task;
+        return taskRepo.save(task);
     }
 }

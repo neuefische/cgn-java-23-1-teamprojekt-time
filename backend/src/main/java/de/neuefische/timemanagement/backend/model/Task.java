@@ -1,8 +1,14 @@
 package de.neuefische.timemanagement.backend.model;
 
-import java.time.ZonedDateTime;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public record Task(String id,
-                   String title,
-                   ZonedDateTime dateTime) {
+import java.time.Instant;
+@Document("tasks")
+
+public record Task(
+        @Id
+        String id,
+        String title,
+        Instant dateTime) {
 }
