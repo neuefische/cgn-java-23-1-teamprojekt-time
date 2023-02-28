@@ -12,7 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,7 +28,7 @@ class TaskControllerTest {
 
     @BeforeEach
     void setUp() {
-        ZonedDateTime today= ZonedDateTime.now().truncatedTo(ChronoUnit.MILLIS);
+        Instant today= Instant.now().truncatedTo(ChronoUnit.MILLIS);
         task1=new Task("1", "task 1",today );
     }
 
@@ -71,7 +71,7 @@ class TaskControllerTest {
     @Test
     @DirtiesContext
     void updateTask() throws Exception{
-        taskRepo.addTask(task1);
+        taskRepo.save(task1);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/tasks/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
