@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,19 +26,19 @@ class TaskServiceTest {
         taskRepo= mock(TaskRepo.class);
         idService=mock(IdService.class);
         taskService = new TaskService(taskRepo,idService);
-        ZonedDateTime today= ZonedDateTime.now();
+        Instant today= Instant.now();
         task1=new Task("1", "task 1",today );
     }
 
     @Test
     void getAllTasks() {
         //GIVEN
-        when(taskRepo.getAllTasks()).thenReturn(new ArrayList<>());
+        when(taskRepo.findAll()).thenReturn(new ArrayList<>());
         //WHEN
         List<Task> actual = taskService.getAllTasks();
         List<Task> expected = new ArrayList<>();
         //THEN
-        verify(taskRepo).getAllTasks();
+        verify(taskRepo).findAll();
         Assertions.assertEquals(expected,actual);
 
     }
@@ -48,14 +48,14 @@ class TaskServiceTest {
         //GIVEN
         when(idService.generateId()).thenReturn("Whatever Id");
         Task taskWithId= new Task("Whatever Id",task1.title(),task1.dateTime());
-        when(taskRepo.addTask(taskWithId)).thenReturn(taskWithId);
+        when(taskRepo.save(taskWithId)).thenReturn(taskWithId);
 
         //WHEN
         Task expected=taskWithId;
         Task actualTask=taskService.addTask(task1);
 
         //THEN
-        verify(taskRepo).addTask(taskWithId);
+        verify(taskRepo).save(taskWithId);
         verify(idService).generateId();
         Assertions.assertEquals(expected,actualTask);
 
@@ -73,26 +73,27 @@ class TaskServiceTest {
     @Test
     void updateTask(){
         //GIVEN
-        when(taskRepo.updateTask(task1)).thenReturn(task1);
+        when(taskRepo.existsById(task1.id())).thenReturn(true);
+        when(taskRepo.save(task1)).thenReturn(task1);
         //WHEN
         Task actual=taskService.updateTask(task1.id(),task1);
         Task expected=task1;
         //THEN
-        verify(taskRepo).updateTask(task1);
+        verify(taskRepo).save(task1);
+        verify(taskRepo).existsById(task1.id());
         Assertions.assertEquals(expected,actual);
     }
     @Test
     void updateTask_idMissMatch(){
-        //GIVEN
-        when(taskRepo.updateTask(task1)).thenReturn(task1);
         //WHEN & THEN
         assertThrows(IllegalArgumentException.class,()->{taskService.updateTask("3",task1);});
     }
     @Test
     void updateTask_idDoesntExist(){
         //GIVEN
-        when(taskRepo.updateTask(task1)).thenReturn(null);
+        when(taskRepo.existsById(task1.id())).thenReturn(false);
         //WHEN & THEN
         assertThrows(NoSuchElementException.class,()->{taskService.updateTask(task1.id(),task1);});
+        verify(taskRepo).existsById(task1.id());
     }
 }
