@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 
-export default function useTask(){
+export default function useTasks(){
 const [tasks,setTasks]=useState<Task[]>([]);
 function loadAllTasks(){
     axios.get("/api/tasks/")

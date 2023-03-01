@@ -3,11 +3,11 @@ import './App.css';
 import {Route, Routes} from "react-router-dom";
 import TasksGallery from "./component/TasksGallery";
 import AddTask from "./component/AddTask";
-import useTask from "./hooks/useTask";
+import useTasks from "./hooks/useTasks";
 import TaskDetails from "./component/TaskDetails";
 
 function App() {
-    const {tasks,postNewTask}=useTask()
+    const {tasks,postNewTask}=useTasks()
   return (
     <div className="App">
        <Routes>
