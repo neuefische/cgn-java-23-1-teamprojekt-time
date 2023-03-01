@@ -40,7 +40,6 @@ class TaskServiceTest {
         //THEN
         verify(taskRepo).getAllTasks();
         Assertions.assertEquals(expected,actual);
-
     }
 
     @Test
@@ -54,7 +53,6 @@ class TaskServiceTest {
         //THEN
         verify(taskRepo).getTaskById("1");
         Assertions.assertEquals(expected,actualTask);
-
     }
 
     @Test
@@ -62,9 +60,7 @@ class TaskServiceTest {
         // GIVEN
         when(taskRepo.getTaskById("3")).thenReturn(Optional.empty());
         // WHEN
-        assertThrows(NoSuchElementException.class, () -> {
-            taskService.getTaskById("3");
-        });
+        assertThrows(NoSuchElementException.class, () ->taskService.getTaskById("3"));
         // THEN
         verify(taskRepo).getTaskById("3");
     }
@@ -84,7 +80,6 @@ class TaskServiceTest {
         verify(taskRepo).addTask(taskWithId);
         verify(idService).generateId();
         Assertions.assertEquals(expected,actualTask);
-
     }
 
     @Test
@@ -94,7 +89,7 @@ class TaskServiceTest {
         Task invalidTaskWithId= new Task("Whatever Id",null,task1.dateTime());
 
         //WHEN & THEN
-        assertThrows(IllegalArgumentException.class,()->{taskService.addTask(invalidTaskWithId);});
+        assertThrows(IllegalArgumentException.class,()->taskService.addTask(invalidTaskWithId));
     }
     @Test
     void updateTask(){
@@ -112,13 +107,13 @@ class TaskServiceTest {
         //GIVEN
         when(taskRepo.updateTask(task1)).thenReturn(task1);
         //WHEN & THEN
-        assertThrows(IllegalArgumentException.class,()->{taskService.updateTask("3",task1);});
+        assertThrows(IllegalArgumentException.class,()->taskService.updateTask("3",task1));
     }
     @Test
     void updateTask_idDoesntExist(){
         //GIVEN
         when(taskRepo.updateTask(task1)).thenReturn(null);
         //WHEN & THEN
-        assertThrows(NoSuchElementException.class,()->{taskService.updateTask(task1.id(),task1);});
+        assertThrows(NoSuchElementException.class,()->taskService.updateTask(task1.id(),task1));
     }
 }
