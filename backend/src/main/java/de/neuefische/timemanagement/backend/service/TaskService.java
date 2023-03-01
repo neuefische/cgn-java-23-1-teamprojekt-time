@@ -36,8 +36,16 @@ public class TaskService {
         }
 
         if(!taskRepo.existsById(id)){
-            throw new NoSuchElementException("Task with id "+id +"doesn't exist");
+            throw new NoSuchElementException("Task with id "+id +" doesn't exist");
         }
         return taskRepo.save(task);
+    }
+
+    public List<Task> deleteTask(String id) {
+        if(!taskRepo.existsById(id)){
+            throw new NoSuchElementException("Task with id "+id +" doesn't exist");
+        }
+        taskRepo.deleteById(id);
+        return getAllTasks();
     }
 }

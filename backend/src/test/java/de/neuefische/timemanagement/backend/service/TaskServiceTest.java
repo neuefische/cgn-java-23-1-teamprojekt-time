@@ -117,4 +117,27 @@ class TaskServiceTest {
         assertThrows(NoSuchElementException.class,()->taskService.updateTask(task1.id(),task1));
         verify(taskRepo).existsById(task1.id());
     }
+
+    @Test
+    void deleteTask_whenTaskExists_thenReturnEmptyList() {
+        // GIVEN
+        when(taskRepo.existsById(task1.id())).thenReturn(true);
+        when(taskRepo.findAll()).thenReturn(new ArrayList<>());
+        // WHEN
+        List<Task> expected = new ArrayList<>();
+        List<Task> actual = taskService.deleteTask(task1.id());
+        // THEN
+        assertEquals(expected, actual);
+        verify(taskRepo).existsById(task1.id());
+        verify(taskRepo).findAll();
+    }
+
+    @Test
+    void deleteTask_whenTaskDoesntExist_thenThrowException() {
+        // GIVEN
+        when(taskRepo.existsById("5")).thenReturn(false);
+        // WHEN
+        assertThrows(NoSuchElementException.class, () -> taskService.deleteTask("5"));
+        verify(taskRepo).existsById("5");
+    }
 }
