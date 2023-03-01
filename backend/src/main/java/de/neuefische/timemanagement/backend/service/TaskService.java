@@ -1,6 +1,7 @@
 package de.neuefische.timemanagement.backend.service;
 
 import de.neuefische.timemanagement.backend.model.Task;
+import de.neuefische.timemanagement.backend.model.TaskDTO;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class TaskService {
         return taskRepo.findAll();
     }
 
-    public Task addTask(Task newTask){
+    public Task addTask(TaskDTO newTask){
         if(newTask.title()==null ||newTask.title().equals("") ||newTask.dateTime()==null){
             throw new IllegalArgumentException("missing title or date");
         }
@@ -30,7 +31,7 @@ public class TaskService {
         return taskRepo.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
-    public Task updateTask(String id,Task task){
+    public Task updateTask(String id,TaskDTO task){
         if (!task.id().equals(id)) {
             throw new IllegalArgumentException("Id don't match");
         }
@@ -38,7 +39,10 @@ public class TaskService {
         if(!taskRepo.existsById(id)){
             throw new NoSuchElementException("Task with id "+id +" doesn't exist");
         }
-        return taskRepo.save(task);
+
+        Task updatedTask = new Task(task.id(), task.title(), task.dateTime());
+
+        return taskRepo.save(updatedTask);
     }
 
     public List<Task> deleteTask(String id) {

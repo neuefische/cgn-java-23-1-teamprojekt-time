@@ -1,5 +1,6 @@
 package de.neuefische.timemanagement.backend.service;
 import de.neuefische.timemanagement.backend.model.Task;
+import de.neuefische.timemanagement.backend.model.TaskDTO;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ class TaskServiceTest {
     TaskRepo taskRepo;
     TaskService taskService;
     IdService idService;
+    TaskDTO task1DTO;
     Task task1;
 
     @BeforeEach
@@ -27,7 +29,8 @@ class TaskServiceTest {
         idService=mock(IdService.class);
         taskService = new TaskService(taskRepo,idService);
         Instant today= Instant.now();
-        task1=new Task("1", "task 1",today );
+        task1DTO = new TaskDTO("1", "task 1", today);
+        task1 = new Task(task1DTO.id(), task1DTO.title(), task1DTO.dateTime());
     }
 
     @Test
@@ -73,7 +76,7 @@ class TaskServiceTest {
 
         //WHEN
         Task expected=taskWithId;
-        Task actualTask=taskService.addTask(task1);
+        Task actualTask=taskService.addTask(task1DTO);
 
         //THEN
         verify(taskRepo).save(taskWithId);
@@ -86,7 +89,7 @@ class TaskServiceTest {
     void addTask_MissingTitle(){
         //GIVEN
         when(idService.generateId()).thenReturn("Whatever Id");
-        Task invalidTaskWithId= new Task("Whatever Id",null,task1.dateTime());
+        TaskDTO invalidTaskWithId= new TaskDTO("Whatever Id",null,task1.dateTime());
 
         //WHEN & THEN
         assertThrows(IllegalArgumentException.class,()->taskService.addTask(invalidTaskWithId));
@@ -97,7 +100,7 @@ class TaskServiceTest {
         when(taskRepo.existsById(task1.id())).thenReturn(true);
         when(taskRepo.save(task1)).thenReturn(task1);
         //WHEN
-        Task actual=taskService.updateTask(task1.id(),task1);
+        Task actual=taskService.updateTask(task1DTO.id(),task1DTO);
         Task expected=task1;
         //THEN
         verify(taskRepo).save(task1);
@@ -107,14 +110,14 @@ class TaskServiceTest {
     @Test
     void updateTask_idMissMatch(){
         //WHEN & THEN
-        assertThrows(IllegalArgumentException.class,()->taskService.updateTask("3",task1));
+        assertThrows(IllegalArgumentException.class,()->taskService.updateTask("3", task1DTO));
     }
     @Test
     void updateTask_idDoesntExist(){
         //GIVEN
         when(taskRepo.existsById(task1.id())).thenReturn(false);
         //WHEN & THEN
-        assertThrows(NoSuchElementException.class,()->taskService.updateTask(task1.id(),task1));
+        assertThrows(NoSuchElementException.class,()->taskService.updateTask(task1.id(), task1DTO));
         verify(taskRepo).existsById(task1.id());
     }
 
