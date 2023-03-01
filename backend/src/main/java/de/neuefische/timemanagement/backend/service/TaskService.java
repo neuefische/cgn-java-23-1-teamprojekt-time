@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class TaskService {
@@ -29,4 +30,14 @@ public class TaskService {
         return taskRepo.getTaskById(id).orElseThrow(NoSuchElementException::new);
     }
 
+    public Task updateTask(String id,Task task){
+        if (!task.id().equals(id)) {
+            throw new IllegalArgumentException("Id don't match");
+        }
+        Task oldTask=taskRepo.updateTask(task);
+        if(oldTask==null){
+            throw new NoSuchElementException("Task with id "+id +"doesn't exist");
+        }
+        return task;
     }
+}

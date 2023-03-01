@@ -4,8 +4,8 @@ import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import java.time.LocalDateTime;
+
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,7 +26,7 @@ class TaskServiceTest {
         taskRepo= mock(TaskRepo.class);
         idService=mock(IdService.class);
         taskService = new TaskService(taskRepo,idService);
-        LocalDateTime today= LocalDateTime.now();
+        Instant today= Instant.now();
         task1=new Task("1", "task 1",today );
     }
 
@@ -40,7 +40,6 @@ class TaskServiceTest {
         //THEN
         verify(taskRepo).getAllTasks();
         Assertions.assertEquals(expected,actual);
-
     }
 
     @Test
@@ -54,7 +53,6 @@ class TaskServiceTest {
         //THEN
         verify(taskRepo).getTaskById("1");
         Assertions.assertEquals(expected,actualTask);
-
     }
 
     @Test
@@ -62,9 +60,7 @@ class TaskServiceTest {
         // GIVEN
         when(taskRepo.getTaskById("3")).thenReturn(Optional.empty());
         // WHEN
-        assertThrows(NoSuchElementException.class, () -> {
-            taskService.getTaskById("3");
-        });
+        assertThrows(NoSuchElementException.class, () ->taskService.getTaskById("3"));
         // THEN
         verify(taskRepo).getTaskById("3");
     }
@@ -84,7 +80,6 @@ class TaskServiceTest {
         verify(taskRepo).addTask(taskWithId);
         verify(idService).generateId();
         Assertions.assertEquals(expected,actualTask);
-
     }
 
     @Test
@@ -94,10 +89,31 @@ class TaskServiceTest {
         Task invalidTaskWithId= new Task("Whatever Id",null,task1.dateTime());
 
         //WHEN & THEN
-        assertThrows(IllegalArgumentException.class,()->{taskService.addTask(invalidTaskWithId);});
-
+        assertThrows(IllegalArgumentException.class,()->taskService.addTask(invalidTaskWithId));
     }
-
-
-
+    @Test
+    void updateTask(){
+        //GIVEN
+        when(taskRepo.updateTask(task1)).thenReturn(task1);
+        //WHEN
+        Task actual=taskService.updateTask(task1.id(),task1);
+        Task expected=task1;
+        //THEN
+        verify(taskRepo).updateTask(task1);
+        Assertions.assertEquals(expected,actual);
+    }
+    @Test
+    void updateTask_idMissMatch(){
+        //GIVEN
+        when(taskRepo.updateTask(task1)).thenReturn(task1);
+        //WHEN & THEN
+        assertThrows(IllegalArgumentException.class,()->taskService.updateTask("3",task1));
+    }
+    @Test
+    void updateTask_idDoesntExist(){
+        //GIVEN
+        when(taskRepo.updateTask(task1)).thenReturn(null);
+        //WHEN & THEN
+        assertThrows(NoSuchElementException.class,()->taskService.updateTask(task1.id(),task1));
+    }
 }

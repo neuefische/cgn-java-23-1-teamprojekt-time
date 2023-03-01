@@ -7,14 +7,15 @@ type Props={
     task:Task
 }
 export default function TasksCard(props:Props){
-
    return(
        <div className={"task-card"}>
            <h2>{props.task.title}</h2>
            {props.task.dateTime.getFullYear()} / {props.task.dateTime.getMonth()+1} / {props.task.dateTime.getDate()}<br/>
-           {props.task.dateTime.getHours()}:{props.task.dateTime.getMinutes()}
+           {props.task.dateTime.getHours()}:{props.task.dateTime.getMinutes().toString().padStart(2,'0')}
            <br/>
            <Link to={"/tasks/"+props.task.id}>details</Link>
+           <br/>
+           <Link to={`/tasks/${props.task.id}/update`}>Edit</Link>
        </div>
    )
 }

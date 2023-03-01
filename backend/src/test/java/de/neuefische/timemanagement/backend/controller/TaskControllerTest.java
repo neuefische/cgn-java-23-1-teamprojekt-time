@@ -11,9 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import java.time.LocalDateTime;
+
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,10 +31,8 @@ class TaskControllerTest {
 
     @BeforeEach
     void setUp() {
-
-        LocalDateTime today = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
-        task1 = new Task("1", "task 1", today);
-
+        Instant today= Instant.now().truncatedTo(ChronoUnit.MILLIS);
+        task1=new Task("1", "task 1",today );
     }
 
     @Test
@@ -54,7 +54,7 @@ class TaskControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         """                        
-                                {"title": "task 1","dateTime": "2023-02-23T09:32:27.325" }
+                                {"title": "task 1","dateTime": "2023-02-23T09:32:27.325Z" }
                                     """
                 )).andExpect(jsonPath("$.id").isNotEmpty());
     }
@@ -81,5 +81,27 @@ class TaskControllerTest {
                                         """.formatted(task1.dateTime())
                     ));
 
+    }
+    @Test
+    @DirtiesContext
+    void updateTask() throws Exception{
+        taskRepo.addTask(task1);
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/tasks/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                        "id": "1",
+                        "title": "task updated",
+                        "dateTime":"2023-02-23T09:32:27.325Z"
+                        }
+                        """))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                        "id": "1",
+                        "title": "task updated",
+                        "dateTime":"2023-02-23T09:32:27.325Z"
+                        }
+                        """));
     }
 }

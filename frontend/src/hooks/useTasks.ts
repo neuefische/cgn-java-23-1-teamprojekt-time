@@ -1,8 +1,6 @@
 import {useEffect, useState} from "react";
-import {NewTask, Task} from "../model/Task";
+import {Task} from "../model/Task";
 import axios from "axios";
-
-
 
 
 export default function useTasks(){
@@ -21,7 +19,7 @@ function loadAllTasks(){
         .catch(console.error)
 }
 
-    function postNewTask(newTask: NewTask){
+    function postNewTask(newTask: Task){
         return axios.post("/api/tasks/",newTask)
             .then(response=>{
                 const returnedTask ={
@@ -32,10 +30,28 @@ function loadAllTasks(){
             })
             .catch(console.error)
     }
+    function updateTask(task:Task){
+        return axios.put("/api/tasks/"+task.id,task)
+            .then(response=>{
+                setTasks(prevState => {
+                        return prevState.map(currentTask=>{
+                            if (currentTask.id===task.id){
+                                return {
+                                    ...response.data,
+                                    dateTime:new Date(response.data.dateTime)
+                                }
+                            }
+                            return currentTask
+                        })
+                    }
+                )
+            })
+            .catch(console.error)
+    }
 
 useEffect(()=> {
     loadAllTasks()
 },[])
 
-return {tasks,postNewTask}
+return {tasks,postNewTask,updateTask}
 }

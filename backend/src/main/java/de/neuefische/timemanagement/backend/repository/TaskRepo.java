@@ -19,11 +19,14 @@ public class TaskRepo {
 
     public Task addTask(Task newTask){
         taskMap.put(newTask.id(),newTask);
-        return newTask;}
+        return newTask;
+    }
 
+    public Optional<Task> getTaskById(String id){
+        return Optional.ofNullable(taskMap.get(id));
+    }
 
-
-    public Optional<Task> getTaskById(String id){ return Optional.ofNullable(taskMap.get(id));}
-
-
+    public Task updateTask(Task task){
+        return taskMap.replace(task.id(),task);
+    }
 }

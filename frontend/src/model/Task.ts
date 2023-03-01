@@ -1,8 +1,6 @@
 
 export type  Task={
-    id: string,
+    id?: string,
     title:string,
     dateTime:Date
 }
-
-export type NewTask = Omit<Task, "id">
