@@ -1,8 +1,8 @@
 package de.neuefische.timemanagement.backend.model;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 public record Task(String id,
                    String title,
-                   ZonedDateTime dateTime) {
+                   Instant dateTime) {
 }

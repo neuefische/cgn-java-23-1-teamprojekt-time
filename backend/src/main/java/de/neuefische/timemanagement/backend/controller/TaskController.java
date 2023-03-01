@@ -9,7 +9,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/api/tasks/")
 public class TaskController {
     private final TaskService taskService;
 
@@ -23,12 +23,12 @@ public class TaskController {
         return taskService.addTask(task);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public Task updateTask(@PathVariable String id, @RequestBody Task task){
         return taskService.updateTask(id,task);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Task getTaskById(@PathVariable String id){
         return taskService.getTaskById(id);
     }

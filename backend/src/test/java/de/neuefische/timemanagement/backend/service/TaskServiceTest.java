@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,7 +26,7 @@ class TaskServiceTest {
         taskRepo= mock(TaskRepo.class);
         idService=mock(IdService.class);
         taskService = new TaskService(taskRepo,idService);
-        ZonedDateTime today= ZonedDateTime.now();
+        Instant today= Instant.now();
         task1=new Task("1", "task 1",today );
     }
 
