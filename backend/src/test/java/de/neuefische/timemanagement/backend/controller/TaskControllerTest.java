@@ -17,6 +17,9 @@ import java.time.temporal.ChronoUnit;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class TaskControllerTest {
@@ -56,8 +59,6 @@ class TaskControllerTest {
                 )).andExpect(jsonPath("$.id").isNotEmpty());
     }
 
-
-
     @Test
     @DirtiesContext
     void addTaskNotValidDateTime() throws Exception {
@@ -68,6 +69,19 @@ class TaskControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    @DirtiesContext
+    void getTaskById() throws Exception {
+        taskRepo.save(task1);
+            mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/1"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(
+                            """                        
+                                    { "id":"1","title": "task 1","dateTime": "%s"}
+                                        """.formatted(task1.dateTime())
+                    ));
+
+    }
     @Test
     @DirtiesContext
     void updateTask() throws Exception{

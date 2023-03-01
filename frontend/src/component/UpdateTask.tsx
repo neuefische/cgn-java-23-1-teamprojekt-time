@@ -11,7 +11,7 @@ type Props = {
 
 export default function UpdateTask(props: Props) {
     const params = useParams();
-    const taskId: String | undefined = params.id;
+    const taskId: string | undefined = params.id;
 
     const [task, setTask] = useState<Task | undefined>();
 
@@ -32,8 +32,6 @@ export default function UpdateTask(props: Props) {
             <h2>Sorry, no task with id {taskId} found :(</h2>
         )
     }
-
-
 
     return (
         <>
