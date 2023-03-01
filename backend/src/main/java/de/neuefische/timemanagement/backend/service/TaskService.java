@@ -4,8 +4,9 @@ import de.neuefische.timemanagement.backend.model.Task;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.NoSuchElementException;
 
-import java.util.*;
 
 @Service
 @RequiredArgsConstructor

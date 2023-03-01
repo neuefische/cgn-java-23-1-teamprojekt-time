@@ -39,9 +39,8 @@ class TaskServiceTest {
         List<Task> expected = new ArrayList<>();
         //THEN
         verify(taskRepo).findAll();
-        Assertions.assertEquals(expected,actual);
+        Assertions.assertEquals(expected, actual);
     }
-
     @Test
     void getTaskById(){
 
@@ -80,6 +79,7 @@ class TaskServiceTest {
         verify(taskRepo).save(taskWithId);
         verify(idService).generateId();
         Assertions.assertEquals(expected,actualTask);
+
     }
 
     @Test
