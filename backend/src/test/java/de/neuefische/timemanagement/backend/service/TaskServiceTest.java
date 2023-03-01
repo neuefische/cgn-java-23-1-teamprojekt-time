@@ -33,36 +33,35 @@ class TaskServiceTest {
     @Test
     void getAllTasks() {
         //GIVEN
-        when(taskRepo.getAllTasks()).thenReturn(new ArrayList<>());
+        when(taskRepo.findAll()).thenReturn(new ArrayList<>());
         //WHEN
         List<Task> actual = taskService.getAllTasks();
         List<Task> expected = new ArrayList<>();
         //THEN
-        verify(taskRepo).getAllTasks();
-        Assertions.assertEquals(expected,actual);
+        verify(taskRepo).findAll();
+        Assertions.assertEquals(expected, actual);
     }
-
     @Test
     void getTaskById(){
 
         //GIVEN
-        when(taskRepo.getTaskById("1")).thenReturn(Optional.of(task1));
+        when(taskRepo.findById("1")).thenReturn(Optional.of(task1));
         //WHEN
         Task actualTask=taskService.getTaskById("1");
         Task expected = task1;
         //THEN
-        verify(taskRepo).getTaskById("1");
+        verify(taskRepo).findById("1");
         Assertions.assertEquals(expected,actualTask);
     }
 
     @Test
     void getTaskById_idDoesntExist(){
         // GIVEN
-        when(taskRepo.getTaskById("3")).thenReturn(Optional.empty());
+        when(taskRepo.findById("3")).thenReturn(Optional.empty());
         // WHEN
         assertThrows(NoSuchElementException.class, () ->taskService.getTaskById("3"));
         // THEN
-        verify(taskRepo).getTaskById("3");
+        verify(taskRepo).findById("3");
     }
 
     @Test
@@ -70,16 +69,17 @@ class TaskServiceTest {
         //GIVEN
         when(idService.generateId()).thenReturn("Whatever Id");
         Task taskWithId= new Task("Whatever Id",task1.title(),task1.dateTime());
-        when(taskRepo.addTask(taskWithId)).thenReturn(taskWithId);
+        when(taskRepo.save(taskWithId)).thenReturn(taskWithId);
 
         //WHEN
         Task expected=taskWithId;
         Task actualTask=taskService.addTask(task1);
 
         //THEN
-        verify(taskRepo).addTask(taskWithId);
+        verify(taskRepo).save(taskWithId);
         verify(idService).generateId();
         Assertions.assertEquals(expected,actualTask);
+
     }
 
     @Test
@@ -94,26 +94,27 @@ class TaskServiceTest {
     @Test
     void updateTask(){
         //GIVEN
-        when(taskRepo.updateTask(task1)).thenReturn(task1);
+        when(taskRepo.existsById(task1.id())).thenReturn(true);
+        when(taskRepo.save(task1)).thenReturn(task1);
         //WHEN
         Task actual=taskService.updateTask(task1.id(),task1);
         Task expected=task1;
         //THEN
-        verify(taskRepo).updateTask(task1);
+        verify(taskRepo).save(task1);
+        verify(taskRepo).existsById(task1.id());
         Assertions.assertEquals(expected,actual);
     }
     @Test
     void updateTask_idMissMatch(){
-        //GIVEN
-        when(taskRepo.updateTask(task1)).thenReturn(task1);
         //WHEN & THEN
         assertThrows(IllegalArgumentException.class,()->taskService.updateTask("3",task1));
     }
     @Test
     void updateTask_idDoesntExist(){
         //GIVEN
-        when(taskRepo.updateTask(task1)).thenReturn(null);
+        when(taskRepo.existsById(task1.id())).thenReturn(false);
         //WHEN & THEN
         assertThrows(NoSuchElementException.class,()->taskService.updateTask(task1.id(),task1));
+        verify(taskRepo).existsById(task1.id());
     }
 }

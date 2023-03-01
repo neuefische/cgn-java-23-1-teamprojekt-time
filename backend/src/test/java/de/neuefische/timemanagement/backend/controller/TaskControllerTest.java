@@ -72,7 +72,7 @@ class TaskControllerTest {
     @Test
     @DirtiesContext
     void getTaskById() throws Exception {
-        taskRepo.addTask(task1);
+        taskRepo.save(task1);
             mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/1"))
                     .andExpect(status().isOk())
                     .andExpect(content().json(
@@ -85,7 +85,7 @@ class TaskControllerTest {
     @Test
     @DirtiesContext
     void updateTask() throws Exception{
-        taskRepo.addTask(task1);
+        taskRepo.save(task1);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/tasks/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
