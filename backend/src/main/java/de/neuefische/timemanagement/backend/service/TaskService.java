@@ -4,16 +4,12 @@ import de.neuefische.timemanagement.backend.model.Task;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.InputMismatchException;
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
 public class TaskService {
-
     private final TaskRepo taskRepo;
     private final IdService idService;
 
@@ -29,6 +25,11 @@ public class TaskService {
         Task newTaskWithId = new Task(id, newTask.title(), newTask.dateTime());
         return taskRepo.addTask(newTaskWithId);
     }
+
+    public Task getTaskById(String id){
+        return taskRepo.getTaskById(id).orElseThrow(NoSuchElementException::new);
+    }
+
     public Task updateTask(String id,Task task){
         if (!task.id().equals(id)) {
             throw new IllegalArgumentException("Id don't match");

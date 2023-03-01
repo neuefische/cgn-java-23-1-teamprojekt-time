@@ -1,5 +1,4 @@
 package de.neuefische.timemanagement.backend.service;
-
 import de.neuefische.timemanagement.backend.model.Task;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import org.junit.jupiter.api.Assertions;
@@ -10,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -41,6 +41,32 @@ class TaskServiceTest {
         verify(taskRepo).getAllTasks();
         Assertions.assertEquals(expected,actual);
 
+    }
+
+    @Test
+    void getTaskById(){
+
+        //GIVEN
+        when(taskRepo.getTaskById("1")).thenReturn(Optional.of(task1));
+        //WHEN
+        Task actualTask=taskService.getTaskById("1");
+        Task expected = task1;
+        //THEN
+        verify(taskRepo).getTaskById("1");
+        Assertions.assertEquals(expected,actualTask);
+
+    }
+
+    @Test
+    void getTaskById_idDoesntExist(){
+        // GIVEN
+        when(taskRepo.getTaskById("3")).thenReturn(Optional.empty());
+        // WHEN
+        assertThrows(NoSuchElementException.class, () -> {
+            taskService.getTaskById("3");
+        });
+        // THEN
+        verify(taskRepo).getTaskById("3");
     }
 
     @Test
