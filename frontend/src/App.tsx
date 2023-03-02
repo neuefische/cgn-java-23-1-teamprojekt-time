@@ -22,7 +22,7 @@ function App() {
                 <Route path={"/tasks/add"} element={<AddTask onAdd={postNewTask}/>}/>
                 <Route path={"/tasks/:id"} element={<TaskDetails tasks={tasks} deleteTask={deleteTask}/>}/>
                 <Route path={"/tasks/:id/update"} element={<UpdateTask tasks={tasks} onUpdate={updateTask} />} />
-                <Route path={"/tasks/days/:year/:month/:day"} element={<DayGallery />} />
+                <Route path={"/tasks/:year/:month/:day"} element={<DayGallery />} />
             </Routes>
         </main>
 

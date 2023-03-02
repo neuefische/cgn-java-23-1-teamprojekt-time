@@ -114,7 +114,7 @@ class TaskControllerTest {
     @DirtiesContext
     void getTasksForDay_whenOneTaskExists_thenReturnThatTask() throws Exception {
         taskRepo.save(task1);
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/days/2023/03/02"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/2023/03/02"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         [
@@ -131,7 +131,7 @@ class TaskControllerTest {
     @DirtiesContext
     void getTasksForDay_whenOneTaskExistsOnAnotherDay_thenReturnEmptyList() throws Exception {
         taskRepo.save(task1);
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/days/2024/03/02"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/2024/03/02"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         []
