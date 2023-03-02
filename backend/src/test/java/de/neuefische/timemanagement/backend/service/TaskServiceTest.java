@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -28,7 +29,7 @@ class TaskServiceTest {
         taskRepo= mock(TaskRepo.class);
         idService=mock(IdService.class);
         taskService = new TaskService(taskRepo,idService);
-        Instant today= Instant.now();
+        Instant today= Instant.parse("2023-03-02T15:30:00Z");
         task1DTO = new TaskDTO( "task 1", today);
         task1 = new Task("1", task1DTO.title(), task1DTO.dateTime());
     }
@@ -137,5 +138,19 @@ class TaskServiceTest {
         // WHEN
         assertThrows(NoSuchElementException.class, () -> taskService.deleteTask("5"));
         verify(taskRepo).existsById("5");
+    }
+
+    @Test
+    void getTasksForDay_whenOneTaskExists_thenReturnThatTask() {
+        // GIVEN
+        Instant startDate = Instant.parse("2023-03-02T00:00:00Z");
+        Instant stopDate = startDate.plus(1, ChronoUnit.DAYS);
+        when(taskRepo.getTasksByDateTimeBetween(startDate, stopDate)).thenReturn(List.of(task1));
+        // WHEN
+        List<Task> expected = List.of(task1);
+        List<Task> actual = taskService.getTasksForDay(2023, 3, 2);
+        // THEN
+        assertEquals(expected, actual);
+        verify(taskRepo).getTasksByDateTimeBetween(startDate, stopDate);
     }
 }

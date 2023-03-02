@@ -39,4 +39,9 @@ public class TaskController {
         return taskService.deleteTask(id);
     }
 
+    @GetMapping("days/{year}/{month}/{day}")
+    public List<Task> getTasksForDay(@PathVariable int year, @PathVariable int month, @PathVariable int day) {
+        return taskService.getTasksForDay(year, month, day);
+    }
+
 }

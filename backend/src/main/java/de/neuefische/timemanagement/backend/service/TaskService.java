@@ -5,6 +5,9 @@ import de.neuefische.timemanagement.backend.model.TaskDTO;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -47,5 +50,11 @@ public class TaskService {
         }
         taskRepo.deleteById(id);
         return getAllTasks();
+    }
+
+    public List<Task> getTasksForDay(int year, int month, int day) {
+        Instant startDate = Instant.parse(String.format("%d-%02d-%02dT00:00:00Z", year, month, day));
+        Instant stopDate = startDate.plus(1, ChronoUnit.DAYS);
+        return taskRepo.getTasksByDateTimeBetween(startDate, stopDate);
     }
 }
