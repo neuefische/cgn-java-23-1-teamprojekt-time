@@ -6,7 +6,7 @@ type Props = {
     tasks: Task[]
 }
 export default function TasksGallery(props: Props) {
-    const taskCard = props.tasks.map((task) => {
+    const taskCards = props.tasks.map((task) => {
             return <TasksCard key={task.id} task={task}/>
         }
     )
@@ -14,7 +14,7 @@ export default function TasksGallery(props: Props) {
         <>
             <h2>All Tasks</h2>
             <section className={"task-gallery"}>
-                {taskCard.length>0 ? taskCard : "No Tasks Yet"}
+                {taskCards.length>0 ? taskCards : "No Tasks Yet"}
             </section>
         </>
     )
