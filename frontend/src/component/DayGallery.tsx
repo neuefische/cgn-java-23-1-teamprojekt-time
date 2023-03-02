@@ -30,7 +30,6 @@ export default function DayGallery() {
             return <TasksCard key={task.id} task={task}/>
         }
     )
-
     return (
         <>
             <h2>{moment(`${year}/${month}/${day}`).format("dddd. YYYY-MM-DD")}</h2>
