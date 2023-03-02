@@ -14,7 +14,7 @@ export default function TasksGallery(props: Props) {
         <>
             <h2>All Tasks</h2>
             <section className={"task-gallery"}>
-                {taskCard}
+                {taskCard.length>0 ? taskCard : "No Tasks Yet"}
             </section>
         </>
     )
