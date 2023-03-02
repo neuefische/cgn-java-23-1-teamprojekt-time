@@ -1,0 +1,24 @@
+
+.nav a {
+    text-decoration: none;
+    font-family: "Comic Sans MS",sans-serif;
+    font-weight: bold;
+    font-size: medium;
+    color: darkslateblue;
+}
+
+.nav a:hover {
+    color: darkgoldenrod;
+}
+
+.nav a.active {
+    color: darkgoldenrod;
+}
+
+.nav a.active:hover {
+    color: chocolate;
+}
+
+.nav ul{
+    list-style: none;
+}
