@@ -32,15 +32,11 @@ public class TaskService {
     }
 
     public Task updateTask(String id,TaskDTO task){
-        if (!task.id().equals(id)) {
-            throw new IllegalArgumentException("Id don't match");
-        }
-
         if(!taskRepo.existsById(id)){
             throw new NoSuchElementException("Task with id "+id +" doesn't exist");
         }
 
-        Task updatedTask = new Task(task.id(), task.title(), task.dateTime());
+        Task updatedTask = new Task(id, task.title(), task.dateTime());
 
         return taskRepo.save(updatedTask);
     }

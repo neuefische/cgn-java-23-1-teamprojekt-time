@@ -29,8 +29,8 @@ class TaskServiceTest {
         idService=mock(IdService.class);
         taskService = new TaskService(taskRepo,idService);
         Instant today= Instant.now();
-        task1DTO = new TaskDTO("1", "task 1", today);
-        task1 = new Task(task1DTO.id(), task1DTO.title(), task1DTO.dateTime());
+        task1DTO = new TaskDTO( "task 1", today);
+        task1 = new Task("1", task1DTO.title(), task1DTO.dateTime());
     }
 
     @Test
@@ -89,10 +89,10 @@ class TaskServiceTest {
     void addTask_MissingTitle(){
         //GIVEN
         when(idService.generateId()).thenReturn("Whatever Id");
-        TaskDTO invalidTaskWithId= new TaskDTO("Whatever Id",null,task1.dateTime());
+        TaskDTO invalidTask= new TaskDTO(null,task1.dateTime());
 
         //WHEN & THEN
-        assertThrows(IllegalArgumentException.class,()->taskService.addTask(invalidTaskWithId));
+        assertThrows(IllegalArgumentException.class,()->taskService.addTask(invalidTask));
     }
     @Test
     void updateTask(){
@@ -100,17 +100,12 @@ class TaskServiceTest {
         when(taskRepo.existsById(task1.id())).thenReturn(true);
         when(taskRepo.save(task1)).thenReturn(task1);
         //WHEN
-        Task actual=taskService.updateTask(task1DTO.id(),task1DTO);
+        Task actual=taskService.updateTask(task1.id(),task1DTO);
         Task expected=task1;
         //THEN
         verify(taskRepo).save(task1);
         verify(taskRepo).existsById(task1.id());
         Assertions.assertEquals(expected,actual);
-    }
-    @Test
-    void updateTask_idMissMatch(){
-        //WHEN & THEN
-        assertThrows(IllegalArgumentException.class,()->taskService.updateTask("3", task1DTO));
     }
     @Test
     void updateTask_idDoesntExist(){
