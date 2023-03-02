@@ -8,6 +8,7 @@ import useTasks from "./hooks/useTasks";
 import TaskDetails from "./component/TaskDetails";
 import Header from "./component/Header";
 import Footer from "./component/Footer";
+import DayGallery from "./component/DayGallery";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                 <Route path={"/tasks/add"} element={<AddTask onAdd={postNewTask}/>}/>
                 <Route path={"/tasks/:id"} element={<TaskDetails tasks={tasks} deleteTask={deleteTask}/>}/>
                 <Route path={"/tasks/:id/update"} element={<UpdateTask tasks={tasks} onUpdate={updateTask} />} />
+                <Route path={"/tasks/days/:year/:month/:day"} element={<DayGallery />} />
             </Routes>
         </main>
 
