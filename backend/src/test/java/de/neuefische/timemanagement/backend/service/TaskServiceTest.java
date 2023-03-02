@@ -1,5 +1,6 @@
 package de.neuefische.timemanagement.backend.service;
 import de.neuefische.timemanagement.backend.model.Task;
+import de.neuefische.timemanagement.backend.model.TaskDTO;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ class TaskServiceTest {
     TaskRepo taskRepo;
     TaskService taskService;
     IdService idService;
+    TaskDTO task1DTO;
     Task task1;
 
     @BeforeEach
@@ -27,7 +29,8 @@ class TaskServiceTest {
         idService=mock(IdService.class);
         taskService = new TaskService(taskRepo,idService);
         Instant today= Instant.now();
-        task1=new Task("1", "task 1",today );
+        task1DTO = new TaskDTO( "task 1", today);
+        task1 = new Task("1", task1DTO.title(), task1DTO.dateTime());
     }
 
     @Test
@@ -73,7 +76,7 @@ class TaskServiceTest {
 
         //WHEN
         Task expected=taskWithId;
-        Task actualTask=taskService.addTask(task1);
+        Task actualTask=taskService.addTask(task1DTO);
 
         //THEN
         verify(taskRepo).save(taskWithId);
@@ -86,10 +89,10 @@ class TaskServiceTest {
     void addTask_MissingTitle(){
         //GIVEN
         when(idService.generateId()).thenReturn("Whatever Id");
-        Task invalidTaskWithId= new Task("Whatever Id",null,task1.dateTime());
+        TaskDTO invalidTask= new TaskDTO(null,task1.dateTime());
 
         //WHEN & THEN
-        assertThrows(IllegalArgumentException.class,()->taskService.addTask(invalidTaskWithId));
+        assertThrows(IllegalArgumentException.class,()->taskService.addTask(invalidTask));
     }
     @Test
     void updateTask(){
@@ -97,7 +100,7 @@ class TaskServiceTest {
         when(taskRepo.existsById(task1.id())).thenReturn(true);
         when(taskRepo.save(task1)).thenReturn(task1);
         //WHEN
-        Task actual=taskService.updateTask(task1.id(),task1);
+        Task actual=taskService.updateTask(task1.id(),task1DTO);
         Task expected=task1;
         //THEN
         verify(taskRepo).save(task1);
@@ -105,16 +108,34 @@ class TaskServiceTest {
         Assertions.assertEquals(expected,actual);
     }
     @Test
-    void updateTask_idMissMatch(){
-        //WHEN & THEN
-        assertThrows(IllegalArgumentException.class,()->taskService.updateTask("3",task1));
-    }
-    @Test
     void updateTask_idDoesntExist(){
         //GIVEN
         when(taskRepo.existsById(task1.id())).thenReturn(false);
         //WHEN & THEN
-        assertThrows(NoSuchElementException.class,()->taskService.updateTask(task1.id(),task1));
+        assertThrows(NoSuchElementException.class,()->taskService.updateTask(task1.id(), task1DTO));
         verify(taskRepo).existsById(task1.id());
+    }
+
+    @Test
+    void deleteTask_whenTaskExists_thenReturnEmptyList() {
+        // GIVEN
+        when(taskRepo.existsById(task1.id())).thenReturn(true);
+        when(taskRepo.findAll()).thenReturn(new ArrayList<>());
+        // WHEN
+        List<Task> expected = new ArrayList<>();
+        List<Task> actual = taskService.deleteTask(task1.id());
+        // THEN
+        assertEquals(expected, actual);
+        verify(taskRepo).existsById(task1.id());
+        verify(taskRepo).findAll();
+    }
+
+    @Test
+    void deleteTask_whenTaskDoesntExist_thenThrowException() {
+        // GIVEN
+        when(taskRepo.existsById("5")).thenReturn(false);
+        // WHEN
+        assertThrows(NoSuchElementException.class, () -> taskService.deleteTask("5"));
+        verify(taskRepo).existsById("5");
     }
 }

@@ -49,9 +49,26 @@ function loadAllTasks(){
             .catch(console.error)
     }
 
+    function deleteTask(id:string){
+        return axios.delete("/api/tasks/"+ id)
+            .then(response => response.data
+                .map((task: { dateTime: string; }) =>
+                    ({
+                        ...task,
+                        dateTime:new Date(task.dateTime)
+                    })
+                )
+            )
+            .then(setTasks)
+            .catch(console.error)
+
+    }
+
 useEffect(()=> {
     loadAllTasks()
 },[])
 
-return {tasks,postNewTask,updateTask}
+
+
+return {tasks,postNewTask,updateTask,deleteTask}
 }

@@ -104,4 +104,13 @@ class TaskControllerTest {
                         }
                         """));
     }
+
+    @Test
+    @DirtiesContext
+    void deleteTask_whenIDExists_thenReturnEmptyList() throws Exception {
+        taskRepo.save(task1);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/tasks/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
+    }
 }

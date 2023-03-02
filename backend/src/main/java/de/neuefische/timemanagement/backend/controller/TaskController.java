@@ -1,6 +1,7 @@
 package de.neuefische.timemanagement.backend.controller;
 
 import de.neuefische.timemanagement.backend.model.Task;
+import de.neuefische.timemanagement.backend.model.TaskDTO;
 import de.neuefische.timemanagement.backend.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +20,23 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task addTask(@RequestBody Task task){
+    public Task addTask(@RequestBody TaskDTO task){
         return taskService.addTask(task);
     }
 
     @PutMapping("{id}")
-    public Task updateTask(@PathVariable String id, @RequestBody Task task){
+    public Task updateTask(@PathVariable String id, @RequestBody TaskDTO task){
         return taskService.updateTask(id,task);
     }
 
     @GetMapping("{id}")
     public Task getTaskById(@PathVariable String id){
         return taskService.getTaskById(id);
+    }
+
+    @DeleteMapping("{id}")
+    public List<Task> deleteTaskById(@PathVariable String id) {
+        return taskService.deleteTask(id);
     }
 
 }
