@@ -11,12 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,7 +27,7 @@ class TaskControllerTest {
 
     @BeforeEach
     void setUp() {
-        Instant today= Instant.now().truncatedTo(ChronoUnit.MILLIS);
+        Instant today= Instant.parse("2023-03-02T15:30:00Z");
         task1=new Task("1", "task 1",today );
     }
 
@@ -112,5 +108,33 @@ class TaskControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/tasks/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
+    }
+
+    @Test
+    @DirtiesContext
+    void getTasksForDay_whenOneTaskExists_thenReturnThatTask() throws Exception {
+        taskRepo.save(task1);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/2023/03/02/offset/0"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        [
+                            {
+                                "id": "1",
+                                "title": "task 1",
+                                "dateTime": "2023-03-02T15:30:00Z"
+                            }
+                        ]
+                                                """));
+    }
+
+    @Test
+    @DirtiesContext
+    void getTasksForDay_whenOneTaskExistsOnAnotherDay_thenReturnEmptyList() throws Exception {
+        taskRepo.save(task1);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/2024/03/02/offset/0"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        []
+                                                """));
     }
 }
