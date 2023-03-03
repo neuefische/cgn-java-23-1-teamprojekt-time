@@ -8,10 +8,8 @@ export default function WeekGallery(){
     const params=useParams()
     const year = params.year
     const week = params.week
-   // const date = moment(`${year}/${week}/1`, "gggg/w/E");
-    const date = moment({year :parseInt(year|| "2023")});
-    date.week(parseInt(week || "1"))
-    console.log(date)
+    const date = moment().isoWeekYear(parseInt(year|| "2023")).isoWeek(parseInt(week || "1")).isoWeekday(1);
+
     const daysGallery=[]
     const navigate = useNavigate()
 
@@ -24,12 +22,12 @@ export default function WeekGallery(){
 
     function handleLeftButton(){
         date.subtract(1,"w")
-        navigate(`/tasks/${date.year()}/week/${date.week()}`)
+        navigate(`/tasks/${date.isoWeekYear()}/week/${date.isoWeek()}`)
     }
 
     function handleRightButton(){
         date.add(1,"w")
-        navigate(`/tasks/${date.year()}/week/${date.week()}`)
+        navigate(`/tasks/${date.isoWeekYear()}/week/${date.isoWeek()}`)
     }
 
     return (

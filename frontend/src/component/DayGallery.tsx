@@ -28,7 +28,7 @@ export default function DayGallery(props: Props) {
                 )
                 .then(setTasks)
                 .catch(console.error);
-    }, []);
+    }, [props.year, props.month, props.day]);
 
     const taskCards = tasks.map((task) => {
             return <TasksCard key={task.id} task={task}/>
