@@ -32,9 +32,9 @@ export default function WeekGallery(){
 
     return (
         <>
-            <h2> Week {year}/{week}</h2>
             <button onClick={handleLeftButton}>◀️</button>
             <button onClick={handleRightButton}>▶️</button>
+            <h2> Week {year}/{week}</h2>
             <section className={"weekGallery"}>
                 {daysGallery}
             </section>
