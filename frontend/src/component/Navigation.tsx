@@ -1,8 +1,9 @@
 import {NavLink} from "react-router-dom";
 import "./Navigation.css"
+import moment from "moment";
 
 export default function Navigation(){
-    const today=new Date()
+    const today=moment()
     return(
         <nav className={"nav"}>
             <ul>
@@ -13,7 +14,10 @@ export default function Navigation(){
                     <NavLink to={"/tasks/add"}>Add Task</NavLink>
                 </li>
                 <li>
-                    <NavLink to={`/tasks/${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`}>What's up today</NavLink>
+                    <NavLink to={`/tasks/${today.year()}/${today.month()+1}/${today.date()}`}>What's up today</NavLink>
+                </li>
+                <li>
+                    <NavLink to={`/tasks/${today.year()}/week/${today.week()}`}>What's up this week</NavLink>
                 </li>
             </ul>
         </nav>
