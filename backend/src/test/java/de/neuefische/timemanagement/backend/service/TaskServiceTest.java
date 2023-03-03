@@ -148,7 +148,7 @@ class TaskServiceTest {
         when(taskRepo.getTasksByDateTimeBetween(startDate, stopDate)).thenReturn(List.of(task1));
         // WHEN
         List<Task> expected = List.of(task1);
-        List<Task> actual = taskService.getTasksForDay(2023, 3, 2);
+        List<Task> actual = taskService.getTasksForDay(2023, 3, 2,0);
         // THEN
         assertEquals(expected, actual);
         verify(taskRepo).getTasksByDateTimeBetween(startDate, stopDate);

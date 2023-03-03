@@ -52,8 +52,8 @@ public class TaskService {
         return getAllTasks();
     }
 
-    public List<Task> getTasksForDay(int year, int month, int day) {
-        Instant startDate = Instant.parse(String.format("%d-%02d-%02dT00:00:00Z", year, month, day));
+    public List<Task> getTasksForDay(int year, int month, int day, int offset) {
+        Instant startDate = Instant.parse(String.format("%d-%02d-%02dT00:00:00Z", year, month, day)).minus(offset,ChronoUnit.HOURS);
         Instant stopDate = startDate.plus(1, ChronoUnit.DAYS);
         return taskRepo.getTasksByDateTimeBetween(startDate, stopDate);
     }
