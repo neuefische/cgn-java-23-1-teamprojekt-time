@@ -37,12 +37,12 @@ class TaskServiceTest {
     @Test
     void getAllTasks() {
         //GIVEN
-        when(taskRepo.findAll()).thenReturn(new ArrayList<>());
+        when(taskRepo.findAllByOrderByDateTimeAsc()).thenReturn(new ArrayList<>());
         //WHEN
         List<Task> actual = taskService.getAllTasks();
         List<Task> expected = new ArrayList<>();
         //THEN
-        verify(taskRepo).findAll();
+        verify(taskRepo).findAllByOrderByDateTimeAsc();
         Assertions.assertEquals(expected, actual);
     }
     @Test
@@ -121,14 +121,14 @@ class TaskServiceTest {
     void deleteTask_whenTaskExists_thenReturnEmptyList() {
         // GIVEN
         when(taskRepo.existsById(task1.id())).thenReturn(true);
-        when(taskRepo.findAll()).thenReturn(new ArrayList<>());
+        when(taskRepo.findAllByOrderByDateTimeAsc()).thenReturn(new ArrayList<>());
         // WHEN
         List<Task> expected = new ArrayList<>();
         List<Task> actual = taskService.deleteTask(task1.id());
         // THEN
         assertEquals(expected, actual);
         verify(taskRepo).existsById(task1.id());
-        verify(taskRepo).findAll();
+        verify(taskRepo).findAllByOrderByDateTimeAsc();
     }
 
     @Test
@@ -145,12 +145,12 @@ class TaskServiceTest {
         // GIVEN
         Instant startDate = Instant.parse("2023-03-02T00:00:00Z");
         Instant stopDate = startDate.plus(1, ChronoUnit.DAYS);
-        when(taskRepo.getTasksByDateTimeBetween(startDate, stopDate)).thenReturn(List.of(task1));
+        when(taskRepo.getTasksByDateTimeBetweenOrderByDateTimeAsc(startDate, stopDate)).thenReturn(List.of(task1));
         // WHEN
         List<Task> expected = List.of(task1);
         List<Task> actual = taskService.getTasksForDay(2023, 3, 2,0);
         // THEN
         assertEquals(expected, actual);
-        verify(taskRepo).getTasksByDateTimeBetween(startDate, stopDate);
+        verify(taskRepo).getTasksByDateTimeBetweenOrderByDateTimeAsc(startDate, stopDate);
     }
 }

@@ -17,7 +17,7 @@ export default function DayGallery(props: Props) {
     const[tasks,setTasks]=useState<Task[]>([])
 
     useEffect(() => {
-            axios.get(`/api/tasks/${props.year}/${props.month}/${props.day}/offset/${moment().utcOffset()/60}`)
+            axios.get(`/api/tasks/${props.year}/${props.month}/${props.day}?offset=${moment().utcOffset()/60}`)
                 .then(response => response.data
                     .map((task: { dateTime: string; }) =>
                         ({

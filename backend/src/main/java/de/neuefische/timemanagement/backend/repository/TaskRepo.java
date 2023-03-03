@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface TaskRepo extends MongoRepository<Task, String> {
-    List<Task> getTasksByDateTimeBetween(Instant startDate, Instant stopDate);
+    List<Task> getTasksByDateTimeBetweenOrderByDateTimeAsc(Instant startDate, Instant stopDate);
+    List<Task> findAllByOrderByDateTimeAsc();
 }
