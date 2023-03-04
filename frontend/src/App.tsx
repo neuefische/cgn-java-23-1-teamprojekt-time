@@ -8,7 +8,8 @@ import useTasks from "./hooks/useTasks";
 import TaskDetails from "./component/TaskDetails";
 import Header from "./component/Header";
 import Footer from "./component/Footer";
-import DayGallery from "./component/DayGallery";
+import WeekGallery from "./component/WeekGallery";
+import SingleDayView from "./component/SingleDayView";
 
 
 function App() {
@@ -22,7 +23,8 @@ function App() {
                 <Route path={"/tasks/add"} element={<AddTask onAdd={postNewTask}/>}/>
                 <Route path={"/tasks/:id"} element={<TaskDetails tasks={tasks} deleteTask={deleteTask}/>}/>
                 <Route path={"/tasks/:id/update"} element={<UpdateTask tasks={tasks} onUpdate={updateTask} />} />
-                <Route path={"/tasks/:year/:month/:day"} element={<DayGallery />} />
+                <Route path={"/tasks/:year/:month/:day"} element={<SingleDayView/>} />
+                <Route path={"/tasks/:year/week/:week"} element={<WeekGallery />} />
             </Routes>
         </main>
 

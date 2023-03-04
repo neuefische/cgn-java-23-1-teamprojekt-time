@@ -18,7 +18,7 @@ public class TaskService {
     private final IdService idService;
 
     public List<Task> getAllTasks(){
-        return taskRepo.findAll();
+        return taskRepo.findAllByOrderByDateTimeAsc();
     }
 
     public Task addTask(TaskDTO newTask){
@@ -55,6 +55,6 @@ public class TaskService {
     public List<Task> getTasksForDay(int year, int month, int day, int offset) {
         Instant startDate = Instant.parse(String.format("%d-%02d-%02dT00:00:00Z", year, month, day)).minus(offset,ChronoUnit.HOURS);
         Instant stopDate = startDate.plus(1, ChronoUnit.DAYS);
-        return taskRepo.getTasksByDateTimeBetween(startDate, stopDate);
+        return taskRepo.getTasksByDateTimeBetweenOrderByDateTimeAsc(startDate, stopDate);
     }
 }
