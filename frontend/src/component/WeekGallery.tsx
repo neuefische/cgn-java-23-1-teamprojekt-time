@@ -2,6 +2,7 @@ import moment from "moment";
 import DayGallery from "./DayGallery";
 import {useNavigate, useParams} from "react-router-dom";
 import './WeekGallery.css';
+import Layout from "./Layout";
 
 export default function WeekGallery(){
 
@@ -31,14 +32,13 @@ export default function WeekGallery(){
     }
 
     return (
-        <>
+        <Layout>
             <button onClick={handleLeftButton}>◀️</button>
             <button onClick={handleRightButton}>▶️</button>
             <h2> Week {year}/{week}</h2>
             <section className={"weekGallery"}>
                 {daysGallery}
             </section>
-        </>
+        </Layout>
     )
-
 }

@@ -1,6 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
 import DayGallery from "./DayGallery";
 import moment from "moment";
+import Layout from "./Layout";
 
 export default function SingleDayView(){
     const params = useParams()
@@ -21,14 +22,10 @@ export default function SingleDayView(){
     }
 
     return(
-        <>
-
+        <Layout>
             <button onClick={handleLeftButton}>◀️</button>
             <button onClick={handleRightButton}>▶️</button>
           <DayGallery year={year||"2023"} month={month||"03"} day={day||"2"}/>
-
-        </>
-
+        </Layout>
     )
-
 }

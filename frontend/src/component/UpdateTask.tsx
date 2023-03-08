@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import TaskForm from "./TaskForm";
+import Layout from "./Layout";
 
 type Props = {
     tasks: Task[],
@@ -34,13 +35,13 @@ export default function UpdateTask(props: Props) {
     }
 
     return (
-        <>
+        <Layout>
             <h2>Update Task</h2>
             <TaskForm navigateTo={"/tasks"}
                 onSubmit={props.onUpdate}
                 task={task}
                 action={"update"}
             />
-        </>
+        </Layout>
     )
 }
