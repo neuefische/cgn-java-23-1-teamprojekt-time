@@ -1,4 +1,5 @@
 package de.neuefische.timemanagement.backend.service;
+import de.neuefische.timemanagement.backend.exception.TaskNotFoundException;
 import de.neuefische.timemanagement.backend.model.Task;
 import de.neuefische.timemanagement.backend.model.TaskDTO;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
@@ -10,7 +11,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,7 +63,7 @@ class TaskServiceTest {
         // GIVEN
         when(taskRepo.findById("3")).thenReturn(Optional.empty());
         // WHEN
-        assertThrows(NoSuchElementException.class, () ->taskService.getTaskById("3"));
+        assertThrows(TaskNotFoundException.class, () ->taskService.getTaskById("3"));
         // THEN
         verify(taskRepo).findById("3");
     }
@@ -113,8 +113,17 @@ class TaskServiceTest {
         //GIVEN
         when(taskRepo.existsById(task1.id())).thenReturn(false);
         //WHEN & THEN
-        assertThrows(NoSuchElementException.class,()->taskService.updateTask(task1.id(), task1DTO));
+        assertThrows(TaskNotFoundException.class,()->taskService.updateTask(task1.id(), task1DTO));
         verify(taskRepo).existsById(task1.id());
+    }
+
+    @Test
+    void deleteTask_whenTaskDoesntExist_thenThrowException() {
+        // GIVEN
+        when(taskRepo.existsById("5")).thenReturn(false);
+        // WHEN
+        assertThrows(TaskNotFoundException.class, () -> taskService.deleteTask("5"));
+        verify(taskRepo).existsById("5");
     }
 
     @Test
@@ -129,15 +138,6 @@ class TaskServiceTest {
         assertEquals(expected, actual);
         verify(taskRepo).existsById(task1.id());
         verify(taskRepo).findAllByOrderByDateTimeAsc();
-    }
-
-    @Test
-    void deleteTask_whenTaskDoesntExist_thenThrowException() {
-        // GIVEN
-        when(taskRepo.existsById("5")).thenReturn(false);
-        // WHEN
-        assertThrows(NoSuchElementException.class, () -> taskService.deleteTask("5"));
-        verify(taskRepo).existsById("5");
     }
 
     @Test
