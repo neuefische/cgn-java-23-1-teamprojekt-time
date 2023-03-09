@@ -1,4 +1,4 @@
-import {NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import "./Navigation.css"
 import moment from "moment";
 import useAuth from "../hooks/useAuth";
@@ -36,7 +36,7 @@ export default function Navigation() {
                             <NavLink to={`/tasks/${today.year()}/week/${today.week()}`}>What's up this week</NavLink>
                         </li>
                         <li>
-                            <NavLink to={"#"} onClick={handleLogOutClick}>Sign out</NavLink>
+                            <Link to={"#"} onClick={handleLogOutClick}>Sign out</Link>
                         </li>
 
                     </>
