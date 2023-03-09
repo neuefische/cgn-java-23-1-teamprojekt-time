@@ -36,7 +36,7 @@ export default function DayGallery(props: Props) {
         }
     )
     return (
-        <div>
+        <div className={"day-gallery"}>
             <h2>{moment(`${props.year}/${props.month}/${props.day}`).format("dddd")}<br/>
                 {moment(`${props.year}/${props.month}/${props.day}`).format("YYYY-MM-DD")}
             </h2>

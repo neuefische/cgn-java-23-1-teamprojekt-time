@@ -1,14 +1,15 @@
 .weekGallery{
-    display: flex;
+    display: grid;
+    grid-template: 1fr/ repeat(7,1fr);
     gap: 15px;
     justify-content: center;
-
-
+    margin: 0 15px;
+    flex-grow: 1;
 }
 
-.weekGallery div{
-    border: 1px solid dodgerblue;
+.weekGallery .day-gallery{
+    height: 100%;
+    border: 1px solid #0567B0;
     border-radius: 15px;
     padding: 10px;
-
 }

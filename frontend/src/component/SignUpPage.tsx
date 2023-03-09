@@ -1,5 +1,4 @@
 import Layout from "./Layout";
-import "./SignUpPage.css"
 import SignForm from "./SignForm";
 
 export default function SignUpPage() {
