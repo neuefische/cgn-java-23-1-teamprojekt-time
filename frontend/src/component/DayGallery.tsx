@@ -3,7 +3,7 @@ import {Task} from "../model/Task";
 import axios from "axios";
 import TasksCard from "./TasksCard";
 import moment from "moment/moment";
-import Layout from "./Layout";
+
 
 
 type Props = {
@@ -36,14 +36,12 @@ export default function DayGallery(props: Props) {
         }
     )
     return (
-        <Layout>
-            <div>
-                <h2>{moment(`${props.year}/${props.month}/${props.day}`).format("dddd")}<br/>
-                    {moment(`${props.year}/${props.month}/${props.day}`).format("YYYY-MM-DD")}
-                </h2>
+        <div>
+            <h2>{moment(`${props.year}/${props.month}/${props.day}`).format("dddd")}<br/>
+                {moment(`${props.year}/${props.month}/${props.day}`).format("YYYY-MM-DD")}
+            </h2>
 
-                {taskCards}
-            </div>
-        </Layout>
+            {taskCards}
+        </div>
     )
 }
