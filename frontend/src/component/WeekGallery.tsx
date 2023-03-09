@@ -3,6 +3,7 @@ import DayGallery from "./DayGallery";
 import {useNavigate, useParams} from "react-router-dom";
 import './WeekGallery.css';
 import Layout from "./Layout";
+import useAuth from "../hooks/useAuth";
 
 export default function WeekGallery(){
 
@@ -13,6 +14,7 @@ export default function WeekGallery(){
 
     const daysGallery=[]
     const navigate = useNavigate()
+    const user = useAuth(true)
 
     for(let i=0;i<7;i++){
         daysGallery.push(<DayGallery key={i} year={date.year().toString()} month={(date.month()+1).toString()} day={date.date().toString()}/>)
@@ -31,7 +33,7 @@ export default function WeekGallery(){
         navigate(`/tasks/${date.isoWeekYear()}/week/${date.isoWeek()}`)
     }
 
-    return (
+    return !user ? null : (
         <Layout>
             <button onClick={handleLeftButton}>◀️</button>
             <button onClick={handleRightButton}>▶️</button>

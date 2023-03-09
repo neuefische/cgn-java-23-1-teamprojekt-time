@@ -3,6 +3,7 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import Layout from "./Layout";
+import useAuth from "../hooks/useAuth";
 
 type Props = {
     tasks: Task[]
@@ -14,6 +15,7 @@ export default function TaskDetails(props: Props) {
     const id = params.id
     const navigate = useNavigate()
     const [task, setTask] = useState<Task | undefined>()
+    const user = useAuth(true)
 
     useEffect(() => {
         const filteredTask = props.tasks.find(task => task.id === id);
@@ -39,7 +41,7 @@ export default function TaskDetails(props: Props) {
             .catch(console.error)
     }
 
-    return (
+    return !user ? null : (
         <Layout>
             <h2>{task.title}</h2>
             <div>
