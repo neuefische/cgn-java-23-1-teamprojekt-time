@@ -1,5 +1,6 @@
 package de.neuefische.timemanagement.backend.service;
 
+import de.neuefische.timemanagement.backend.exception.TaskNotFoundException;
 import de.neuefische.timemanagement.backend.model.Task;
 import de.neuefische.timemanagement.backend.model.TaskDTO;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -31,12 +31,12 @@ public class TaskService {
     }
 
     public Task getTaskById(String id){
-        return taskRepo.findById(id).orElseThrow(NoSuchElementException::new);
+        return taskRepo.findById(id).orElseThrow(TaskNotFoundException::new);
     }
 
     public Task updateTask(String id,TaskDTO task){
         if(!taskRepo.existsById(id)){
-            throw new NoSuchElementException("Task with id "+id +" doesn't exist");
+            throw new TaskNotFoundException("Task with id "+id +" doesn't exist");
         }
 
         Task updatedTask = new Task(id, task.title(), task.dateTime());
@@ -46,7 +46,7 @@ public class TaskService {
 
     public List<Task> deleteTask(String id) {
         if(!taskRepo.existsById(id)){
-            throw new NoSuchElementException("Task with id "+id +" doesn't exist");
+            throw new TaskNotFoundException("Task with id "+id +" doesn't exist");
         }
         taskRepo.deleteById(id);
         return getAllTasks();

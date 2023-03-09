@@ -78,6 +78,16 @@ class TaskControllerTest {
                     ));
 
     }
+
+    @Test
+    @DirtiesContext
+    void getTaskById_WhenId_isNot_Valid_Then_404() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/tasks/1"))
+                .andExpect(status().isNotFound());
+
+    }
+
     @Test
     @DirtiesContext
     void updateTask() throws Exception{
