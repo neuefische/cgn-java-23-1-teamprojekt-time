@@ -8,6 +8,7 @@ export default function SignUpPage (){
     const [username,setUsername] = useState<string>("")
     const [password,setPassword] = useState<string>("")
     const navigate = useNavigate()
+    const [formError, setFormError] = useState<string>("");
 
     function handleUsernameChange(event:ChangeEvent<HTMLInputElement>){
         setUsername(event.currentTarget.value)
@@ -25,7 +26,8 @@ export default function SignUpPage (){
         }).then(() => {
             navigate("/sign-in");
         }).catch(err => {
-            alert(err.response.data.error);
+            console.error(err);
+            setFormError(err.response.data.error || err.response.data.message);
         });
     }
 
@@ -36,7 +38,7 @@ export default function SignUpPage (){
                 <h1>Sign Up</h1>
                 <div >
                     <form className={"signup-form"} onSubmit={formSubmitHandler}>
-
+                        {formError && <div className={"form-error"}>Error: {formError}</div>}
                         <div>
                             <label>
                                 Username<br/>

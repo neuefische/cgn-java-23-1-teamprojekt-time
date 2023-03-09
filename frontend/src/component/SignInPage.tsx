@@ -7,6 +7,7 @@ export default function SignInPage () {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const navigate = useNavigate();
+    const [formError, setFormError] = useState<string>("");
 
     function handleUsernameChange(event:ChangeEvent<HTMLInputElement>){
         setUsername(event.currentTarget.value)
@@ -26,7 +27,8 @@ export default function SignInPage () {
         }).then(() => {
             navigate("/");
         }).catch(err => {
-            alert(err.response.data.error);
+            console.error(err);
+            setFormError(err.response.data.error || err.response.data.message);
         });
     }
 
@@ -36,6 +38,7 @@ export default function SignInPage () {
                 <h1>Sign In</h1>
                 <div>
                     <form className={"signup-form"} onSubmit={formSubmitHandler}>
+                        {formError && <div className={"form-error"}>Error: {formError}</div>}
                         <div>
                             <label>
                                 Username<br/>
