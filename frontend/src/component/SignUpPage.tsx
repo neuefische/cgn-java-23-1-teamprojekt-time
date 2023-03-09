@@ -2,6 +2,7 @@ import Layout from "./Layout";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {ChangeEvent, FormEvent, useState} from "react";
+import "./SignUpPage.css"
 
 export default function SignUpPage (){
     const [username,setUsername] = useState<string>("")
@@ -34,7 +35,7 @@ export default function SignUpPage (){
             <div style={{padding: "5rem 0"}}>
                 <h1>Sign Up</h1>
                 <div >
-                    <form onSubmit={formSubmitHandler}>
+                    <form className={"signup-form"} onSubmit={formSubmitHandler}>
 
                         <div>
                             <label>

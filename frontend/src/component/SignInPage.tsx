@@ -35,7 +35,7 @@ export default function SignInPage () {
             <div style={{padding: "5rem 0"}}>
                 <h1>Sign In</h1>
                 <div>
-                    <form onSubmit={formSubmitHandler}>
+                    <form className={"signup-form"} onSubmit={formSubmitHandler}>
                         <div>
                             <label>
                                 Username<br/>
