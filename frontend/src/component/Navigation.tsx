@@ -1,4 +1,4 @@
-import {Link, NavLink} from "react-router-dom";
+import {Link, NavLink, useLocation} from "react-router-dom";
 import "./Navigation.css"
 import moment from "moment";
 import useAuth from "../hooks/useAuth";
@@ -7,6 +7,7 @@ import axios from "axios";
 export default function Navigation() {
     const today = moment()
     const user = useAuth(false);
+    const location = useLocation()
     function handleLogOutClick(){
         axios.post("/api/users/logout").then(() => {
             window.sessionStorage.setItem(
