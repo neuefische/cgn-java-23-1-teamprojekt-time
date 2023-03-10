@@ -1,5 +1,6 @@
 package de.neuefische.timemanagement.backend.service;
 import de.neuefische.timemanagement.backend.exception.TaskNotFoundException;
+import de.neuefische.timemanagement.backend.model.MongoUserResponse;
 import de.neuefische.timemanagement.backend.model.Task;
 import de.neuefische.timemanagement.backend.model.TaskDTO;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.security.Principal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -23,15 +25,19 @@ class TaskServiceTest {
     IdService idService;
     TaskDTO task1DTO;
     Task task1;
+    MongoUserDetailsService mongoUserDetailsService;
+    Principal principal;
 
     @BeforeEach
     void setUp() {
         taskRepo= mock(TaskRepo.class);
         idService=mock(IdService.class);
-        taskService = new TaskService(taskRepo,idService);
+        mongoUserDetailsService = mock(MongoUserDetailsService.class);
+        principal = mock(Principal.class);
+        taskService = new TaskService(taskRepo,idService,mongoUserDetailsService);
         Instant today= Instant.parse("2023-03-02T15:30:00Z");
         task1DTO = new TaskDTO( "task 1", today);
-        task1 = new Task("1", task1DTO.title(), task1DTO.dateTime());
+        task1 = new Task("1", task1DTO.title(), task1DTO.dateTime(),"a");
     }
 
     @Test
@@ -72,16 +78,18 @@ class TaskServiceTest {
     void addTask(){
         //GIVEN
         when(idService.generateId()).thenReturn("Whatever Id");
-        Task taskWithId= new Task("Whatever Id",task1.title(),task1.dateTime());
+        Task taskWithId= new Task("Whatever Id",task1.title(),task1.dateTime(),"a");
         when(taskRepo.save(taskWithId)).thenReturn(taskWithId);
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("a","",""));
 
         //WHEN
         Task expected=taskWithId;
-        Task actualTask=taskService.addTask(task1DTO);
+        Task actualTask=taskService.addTask(task1DTO,principal);
 
         //THEN
         verify(taskRepo).save(taskWithId);
         verify(idService).generateId();
+        verify(mongoUserDetailsService).getMe(principal);
         Assertions.assertEquals(expected,actualTask);
 
     }
@@ -93,51 +101,62 @@ class TaskServiceTest {
         TaskDTO invalidTask= new TaskDTO(null,task1.dateTime());
 
         //WHEN & THEN
-        assertThrows(IllegalArgumentException.class,()->taskService.addTask(invalidTask));
+        assertThrows(IllegalArgumentException.class,()->taskService.addTask(invalidTask,principal));
     }
     @Test
     void updateTask(){
         //GIVEN
-        when(taskRepo.existsById(task1.id())).thenReturn(true);
         when(taskRepo.save(task1)).thenReturn(task1);
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("a","",""));
+        when(taskRepo.findById(task1.id())).thenReturn(Optional.ofNullable(task1));
         //WHEN
-        Task actual=taskService.updateTask(task1.id(),task1DTO);
+        Task actual=taskService.updateTask(task1.id(),task1DTO,principal);
         Task expected=task1;
         //THEN
         verify(taskRepo).save(task1);
-        verify(taskRepo).existsById(task1.id());
+        verify(mongoUserDetailsService).getMe(principal);
+        verify(taskRepo).findById(task1.id());
         Assertions.assertEquals(expected,actual);
     }
     @Test
     void updateTask_idDoesntExist(){
         //GIVEN
         when(taskRepo.existsById(task1.id())).thenReturn(false);
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("a","",""));
+        when(taskRepo.findById(task1.id())).thenReturn(Optional.empty());
         //WHEN & THEN
-        assertThrows(TaskNotFoundException.class,()->taskService.updateTask(task1.id(), task1DTO));
-        verify(taskRepo).existsById(task1.id());
+        assertThrows(TaskNotFoundException.class,()->taskService.updateTask(task1.id(), task1DTO,principal));
+        verify(mongoUserDetailsService).getMe(principal);
+        verify(taskRepo).findById(task1.id());
     }
 
     @Test
     void deleteTask_whenTaskDoesntExist_thenThrowException() {
         // GIVEN
-        when(taskRepo.existsById("5")).thenReturn(false);
+        when(taskRepo.findById("5")).thenReturn(Optional.empty());
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("a","",""));
         // WHEN
-        assertThrows(TaskNotFoundException.class, () -> taskService.deleteTask("5"));
-        verify(taskRepo).existsById("5");
+        assertThrows(TaskNotFoundException.class, () -> taskService.deleteTask("5",principal));
+        verify(mongoUserDetailsService).getMe(principal);
+        verify(taskRepo).findById("5");
     }
 
     @Test
     void deleteTask_whenTaskExists_thenReturnEmptyList() {
         // GIVEN
-        when(taskRepo.existsById(task1.id())).thenReturn(true);
+
         when(taskRepo.findAllByOrderByDateTimeAsc()).thenReturn(new ArrayList<>());
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("a","",""));
+        when(taskRepo.findById(task1.id())).thenReturn(Optional.ofNullable(task1));
+
         // WHEN
         List<Task> expected = new ArrayList<>();
-        List<Task> actual = taskService.deleteTask(task1.id());
+        List<Task> actual = taskService.deleteTask(task1.id(),principal);
         // THEN
         assertEquals(expected, actual);
-        verify(taskRepo).existsById(task1.id());
         verify(taskRepo).findAllByOrderByDateTimeAsc();
+        verify(mongoUserDetailsService).getMe(principal);
+        verify(taskRepo).findById(task1.id());
     }
 
     @Test
