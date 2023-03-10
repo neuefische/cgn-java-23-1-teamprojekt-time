@@ -2,6 +2,7 @@ import {Task} from "../model/Task";
 import {ChangeEvent, FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import moment from "moment";
+import './TaskForm.css'
 
 type Props = {
     onSubmit: (task: Task) => Promise<void>,

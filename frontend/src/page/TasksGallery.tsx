@@ -1,7 +1,7 @@
 import {Task} from "../model/Task";
-import TasksCard from "./TasksCard";
+import TaskCard from "../component/TaskCard";
 import "./TaskGallery.css";
-import Layout from "./Layout";
+import Layout from "../component/Layout";
 import useAuth from "../hooks/useAuth";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 export default function TasksGallery(props: Props) {
     const user = useAuth(true)
     const taskCards = props.tasks.map((task) => {
-            return <TasksCard key={task.id} task={task}/>
+            return <TaskCard key={task.id} task={task}/>
         }
     )
     return !user ? null : (

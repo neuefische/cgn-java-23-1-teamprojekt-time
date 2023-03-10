@@ -21,4 +21,9 @@
 
 .nav ul{
     list-style: none;
+    height:100%;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    align-items: center;
 }

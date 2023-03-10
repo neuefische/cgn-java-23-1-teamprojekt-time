@@ -24,17 +24,17 @@ export default function Navigation() {
                 {user ?
                     <>
                         <li>
-                            <NavLink to={"/tasks/"}>All Tasks</NavLink>
+                            <NavLink to={"/tasks/"}>All tasks</NavLink>
                         </li>
                         <li>
-                            <NavLink to={"/tasks/add"}>Add Task</NavLink>
+                            <NavLink to={"/tasks/add"}>Add task</NavLink>
                         </li>
                         <li>
                             <NavLink to={`/tasks/${today.year()}/${today.month() + 1}/${today.date()}`}>What's up
-                                today</NavLink>
+                                today?</NavLink>
                         </li>
                         <li>
-                            <NavLink to={`/tasks/${today.year()}/week/${today.week()}`}>What's up this week</NavLink>
+                            <NavLink to={`/tasks/${today.year()}/week/${today.week()}`}>What's up this week?</NavLink>
                         </li>
                         <li>
                             <Link to={"#"} onClick={handleLogOutClick}>Sign out</Link>

@@ -2,8 +2,8 @@ import {Task} from "../model/Task";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import TaskForm from "./TaskForm";
-import Layout from "./Layout";
+import TaskForm from "../component/TaskForm";
+import Layout from "../component/Layout";
 import useAuth from "../hooks/useAuth";
 
 type Props = {

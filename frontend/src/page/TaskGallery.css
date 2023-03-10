@@ -3,7 +3,10 @@
     flex-flow: column nowrap;
     justify-content: space-between;
     gap: 10px;
-    border: 1px solid black;
+    border: 2px solid #57BD96;
     width: 80%;
     margin: auto;
+    /*border-radius: 5px;*/
+    overflow: auto;
+    padding: 5px;
 }

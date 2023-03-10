@@ -1,6 +1,5 @@
-import Layout from "./Layout";
-import "./SignUpPage.css"
-import SignForm from "./SignForm";
+import Layout from "../component/Layout";
+import SignForm from "../component/SignForm";
 
 export default function SignUpPage() {
 
