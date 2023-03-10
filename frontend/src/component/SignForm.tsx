@@ -23,7 +23,7 @@ export default function SignForm(props:Props){
 
     function formSubmitHandler(event: FormEvent<HTMLFormElement>) {
         const btoaString = `${username}:${password}`
-        const url="/api/users"+(props.action === "sign-in" ? "/login" : null)
+        const url="/api/users"+(props.action === "sign-in" ? "/login" : "")
         const data=props.action === "sign-in" ? {} : {username, password}
         const config=props.action === "sign-in" ? {headers: {Authorization: `Basic ${window.btoa(btoaString)}`}} :{}
         event.preventDefault();
