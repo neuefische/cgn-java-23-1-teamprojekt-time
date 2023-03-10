@@ -2,7 +2,7 @@ import {Task} from "../model/Task";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import React, {useEffect, useState} from "react";
-import Layout from "./Layout";
+import Layout from "../component/Layout";
 import useAuth from "../hooks/useAuth";
 
 type Props = {

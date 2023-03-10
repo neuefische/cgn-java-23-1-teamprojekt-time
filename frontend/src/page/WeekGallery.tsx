@@ -1,8 +1,8 @@
 import moment from "moment";
-import DayGallery from "./DayGallery";
+import DayGallery from "../component/DayGallery";
 import {useNavigate, useParams} from "react-router-dom";
 import './WeekGallery.css';
-import Layout from "./Layout";
+import Layout from "../component/Layout";
 import useAuth from "../hooks/useAuth";
 
 export default function WeekGallery() {

@@ -1,18 +1,18 @@
 import React from 'react';
 import './App.css';
 import {Route, Routes} from "react-router-dom";
-import TasksGallery from "./component/TasksGallery";
-import AddTask from "./component/AddTask";
-import UpdateTask from "./component/UpdateTask";
+import TasksGallery from "./page/TasksGallery";
+import AddTask from "./page/AddTask";
+import UpdateTask from "./page/UpdateTask";
 import useTasks from "./hooks/useTasks";
-import TaskDetails from "./component/TaskDetails";
+import TaskDetails from "./page/TaskDetails";
 import Footer from "./component/Footer";
-import WeekGallery from "./component/WeekGallery";
-import SingleDayView from "./component/SingleDayView";
+import WeekGallery from "./page/WeekGallery";
+import SingleDayView from "./page/SingleDayView";
 import axios from "axios";
 import Cookies from "js-cookie";
-import SignInPage from "./component/SignInPage";
-import SignUpPage from "./component/SignUpPage";
+import SignInPage from "./page/SignInPage";
+import SignUpPage from "./page/SignUpPage";
 
 axios.interceptors.request.use(function (config) {
     return fetch("/api/csrf").then(() => {

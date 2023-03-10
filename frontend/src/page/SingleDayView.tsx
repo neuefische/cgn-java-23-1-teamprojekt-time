@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
-import DayGallery from "./DayGallery";
+import DayGallery from "../component/DayGallery";
 import moment from "moment";
-import Layout from "./Layout";
+import Layout from "../component/Layout";
 import useAuth from "../hooks/useAuth";
 
 export default function SingleDayView() {

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {Task} from "../model/Task";
 import axios from "axios";
-import TasksCard from "./TasksCard";
+import TaskCard from "./TaskCard";
 import moment from "moment/moment";
 
 
@@ -32,7 +32,7 @@ export default function DayGallery(props: Props) {
     }, [props.year, props.month, props.day]);
 
     const taskCards = tasks.map((task) => {
-            return <TasksCard key={task.id} task={task}/>
+            return <TaskCard key={task.id} task={task}/>
         }
     )
     return (

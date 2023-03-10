@@ -1,7 +1,6 @@
 import {Task} from "../model/Task";
-import './AddTask.css'
-import TaskForm from "./TaskForm";
-import Layout from "./Layout";
+import TaskForm from "../component/TaskForm";
+import Layout from "../component/Layout";
 
 type Props = {
     onAdd: (newTask: Task) => Promise<void>
