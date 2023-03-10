@@ -3,6 +3,7 @@ import DayGallery from "../component/DayGallery";
 import moment from "moment";
 import Layout from "../component/Layout";
 import useAuth from "../hooks/useAuth";
+import "./SingleDayView.css";
 
 export default function SingleDayView() {
     const params = useParams()
@@ -29,7 +30,9 @@ export default function SingleDayView() {
                 <button onClick={handleLeftButton}>◀️</button>
                 <button onClick={handleRightButton}>▶️</button>
             </div>
-            <DayGallery year={year || "2023"} month={month || "03"} day={day || "2"}/>
+            <div className={"single-day-gallery"}>
+                <DayGallery year={year || "2023"} month={month || "03"} day={day || "2"}/>
+            </div>
         </Layout>
     )
 }
