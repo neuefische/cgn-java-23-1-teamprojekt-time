@@ -1,10 +1,12 @@
 import {useEffect, useState} from "react";
 import {Task} from "../model/Task";
 import axios from "axios";
+import useAuth from "./useAuth";
 
 
 export default function useTasks(){
 const [tasks,setTasks]=useState<Task[]>([]);
+const user = useAuth()
 function loadAllTasks(){
     axios.get("/api/tasks/")
         .then(response => response.data
@@ -66,7 +68,7 @@ function loadAllTasks(){
 
 useEffect(()=> {
     loadAllTasks()
-},[])
+},[user])
 
 
 

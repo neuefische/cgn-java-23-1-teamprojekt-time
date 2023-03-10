@@ -2,17 +2,20 @@ import {Task} from "../model/Task";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import React, {useEffect, useState} from "react";
+import Layout from "./Layout";
+import useAuth from "../hooks/useAuth";
 
 type Props = {
-    tasks:Task[]
-    deleteTask:(id: string) => Promise<void>
+    tasks: Task[]
+    deleteTask: (id: string) => Promise<void>
 }
 
-export default function TaskDetails(props:Props){
+export default function TaskDetails(props: Props) {
     const params = useParams()
     const id = params.id
-    const navigate=useNavigate()
-    const[task,setTask]=useState<Task|undefined>()
+    const navigate = useNavigate()
+    const [task, setTask] = useState<Task | undefined>()
+    const user = useAuth(true)
 
     useEffect(() => {
         const filteredTask = props.tasks.find(task => task.id === id);
@@ -31,23 +34,23 @@ export default function TaskDetails(props:Props){
             <h2>Sorry, no task with id {id} found :(</h2>
         )
     }
-    function handleDeleteButton(){
+
+    function handleDeleteButton() {
         props.deleteTask(id || "undefined")
-            .then(()=>navigate("/tasks/"))
+            .then(() => navigate("/tasks/"))
             .catch(console.error)
     }
 
-    return (
-        <>
-        <h2>{task.title}</h2>
-        <div>
-            {task.dateTime.getFullYear()} / {task.dateTime.getMonth()+1} / {task.dateTime.getDate()}<br/>
-            {task.dateTime.getHours()}:{task.dateTime.getMinutes().toString().padStart(2,'0')}
-            <br/>
-            <button onClick={handleDeleteButton}>Delete</button>
-        </div>
+    return !user ? null : (
+        <Layout>
+            <h2>{task.title}</h2>
+            <div>
+                {task.dateTime.getFullYear()} / {task.dateTime.getMonth() + 1} / {task.dateTime.getDate()}<br/>
+                {task.dateTime.getHours()}:{task.dateTime.getMinutes().toString().padStart(2, '0')}
+                <br/>
+                <button onClick={handleDeleteButton}>Delete</button>
+            </div>
             <Link to={"/tasks/"}>back to gallery</Link>
-        </>
+        </Layout>
     )
-
 }

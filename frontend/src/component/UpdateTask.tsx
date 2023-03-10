@@ -3,6 +3,8 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import TaskForm from "./TaskForm";
+import Layout from "./Layout";
+import useAuth from "../hooks/useAuth";
 
 type Props = {
     tasks: Task[],
@@ -14,6 +16,7 @@ export default function UpdateTask(props: Props) {
     const taskId: string | undefined = params.id;
 
     const [task, setTask] = useState<Task | undefined>();
+    const user = useAuth(true)
 
     useEffect(() => {
         const filteredTask = props.tasks.find(task => task.id === taskId);
@@ -33,14 +36,14 @@ export default function UpdateTask(props: Props) {
         )
     }
 
-    return (
-        <>
+    return !user ? null : (
+        <Layout>
             <h2>Update Task</h2>
             <TaskForm navigateTo={"/tasks"}
                 onSubmit={props.onUpdate}
                 task={task}
                 action={"update"}
             />
-        </>
+        </Layout>
     )
 }
