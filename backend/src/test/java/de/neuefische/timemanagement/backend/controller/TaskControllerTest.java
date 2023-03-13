@@ -1,6 +1,8 @@
 package de.neuefische.timemanagement.backend.controller;
 
+import de.neuefische.timemanagement.backend.model.MongoUser;
 import de.neuefische.timemanagement.backend.model.Task;
+import de.neuefische.timemanagement.backend.repository.MongoUserRepository;
 import de.neuefische.timemanagement.backend.repository.TaskRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,11 +29,16 @@ class TaskControllerTest {
     @Autowired
     TaskRepo taskRepo;
     Task task1;
+    @Autowired
+    MongoUserRepository mongoUserRepository;
+
+    MongoUser mongoUser;
 
     @BeforeEach
     void setUp() {
         Instant today= Instant.parse("2023-03-02T15:30:00Z");
-        task1=new Task("1", "task 1",today );
+        task1=new Task("1", "task 1",today,"a" );
+        mongoUser = new MongoUser("a","user","password","BASIC");
     }
 
     @Test
@@ -48,6 +55,15 @@ class TaskControllerTest {
     @DirtiesContext
     @WithMockUser(username = "user")
     void addTask() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
+                .contentType(MediaType.APPLICATION_JSON).content("""
+                        {
+                        "username": "user",
+                        "password" : "password"
+                        }
+                        """).with(csrf())
+        ).andExpect(status().isOk());
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/tasks/")
                         .contentType(MediaType.APPLICATION_JSON).content("""               
                                 {"id": null, "title": "task 1","dateTime": "2023-02-23T09:32:27.325Z" }
@@ -103,6 +119,8 @@ class TaskControllerTest {
     @WithMockUser(username = "user")
     void updateTask() throws Exception{
         taskRepo.save(task1);
+        mongoUserRepository.save(mongoUser);
+
         mockMvc.perform(MockMvcRequestBuilders.put("/api/tasks/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -128,6 +146,7 @@ class TaskControllerTest {
     @WithMockUser(username = "user")
     void deleteTask_whenIDExists_thenReturnEmptyList() throws Exception {
         taskRepo.save(task1);
+        mongoUserRepository.save(mongoUser);
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/tasks/1")
                         .with(csrf()))
                 .andExpect(status().isOk())
