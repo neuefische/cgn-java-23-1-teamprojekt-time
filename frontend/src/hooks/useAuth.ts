@@ -4,7 +4,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {User} from "../model/User";
 
 export default function useAuth (redirectToSignIn?: boolean) {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | undefined>(undefined);
     const navigate = useNavigate();
     const {pathname} = useLocation();
 

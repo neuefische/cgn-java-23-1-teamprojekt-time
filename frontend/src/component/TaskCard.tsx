@@ -6,7 +6,7 @@ import {User} from "../model/User";
 
 type Props={
     task: Task,
-    user: User | null
+    user: User | undefined
 }
 export default function TaskCard(props:Props){
    return(

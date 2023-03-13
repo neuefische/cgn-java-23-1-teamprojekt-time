@@ -10,8 +10,8 @@ import {User} from "../model/User";
 type Props = {
     year: string
     month: string
-    day: string,
-    user: User | null
+    day: string
+    user: User | undefined
 
 }
 
