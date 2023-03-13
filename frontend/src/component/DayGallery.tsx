@@ -3,6 +3,7 @@ import {Task} from "../model/Task";
 import axios from "axios";
 import TaskCard from "./TaskCard";
 import moment from "moment/moment";
+import {User} from "../model/User";
 
 
 
@@ -10,6 +11,7 @@ type Props = {
     year: string
     month: string
     day: string
+    user: User | undefined
 
 }
 
@@ -32,7 +34,7 @@ export default function DayGallery(props: Props) {
     }, [props.year, props.month, props.day]);
 
     const taskCards = tasks.map((task) => {
-            return <TaskCard key={task.id} task={task}/>
+            return <TaskCard key={task.id} task={task} user={props.user} />
         }
     )
     return (

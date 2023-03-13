@@ -2,9 +2,11 @@ import {Task} from "../model/Task";
 import React from "react";
 import "./TaskCard.css";
 import {Link} from "react-router-dom";
+import {User} from "../model/User";
 
 type Props={
-    task:Task
+    task: Task,
+    user: User | undefined
 }
 export default function TaskCard(props:Props){
    return(
@@ -15,7 +17,7 @@ export default function TaskCard(props:Props){
            <br/>
            <Link to={"/tasks/"+props.task.id}>Details</Link>
            <br/>
-           <Link to={`/tasks/${props.task.id}/update`}>Edit</Link>
+           {props.user && props.user.id === props.task.userId ? <Link to={`/tasks/${props.task.id}/update`}>Edit</Link> : "\u00A0" }
        </div>
    )
 }

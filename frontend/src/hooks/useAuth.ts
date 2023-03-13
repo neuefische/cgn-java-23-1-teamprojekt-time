@@ -1,15 +1,10 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-
-type User = {
-    id: string;
-    username: string;
-    role: string;
-}
+import {User} from "../model/User";
 
 export default function useAuth (redirectToSignIn?: boolean) {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | undefined>(undefined);
     const navigate = useNavigate();
     const {pathname} = useLocation();
 

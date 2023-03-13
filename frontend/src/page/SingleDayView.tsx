@@ -31,7 +31,7 @@ export default function SingleDayView() {
                 <button onClick={handleRightButton}>▶️</button>
             </div>
             <div className={"single-day-gallery"}>
-                <DayGallery year={year || "2023"} month={month || "03"} day={day || "2"}/>
+                <DayGallery year={year || "2023"} month={month || "03"} day={day || "2"} user={user}/>
             </div>
         </Layout>
     )
