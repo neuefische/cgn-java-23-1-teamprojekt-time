@@ -40,11 +40,11 @@ export default function TaskDetails(props: Props) {
         <Layout>
             <h2>{task.title}</h2>
             <div className={"task-details"}>
-                {task.dateTime.getFullYear()} / {task.dateTime.getMonth() + 1} / {task.dateTime.getDate()}<br/>
-                {task.dateTime.getHours()}:{task.dateTime.getMinutes().toString().padStart(2, '0')}
+                {task.dateTime.getFullYear()} / {(task.dateTime.getMonth() + 1).toString().padStart(2,'0')} / {task.dateTime.getDate().toString().padStart(2,'0')}<br/>
+                {task.dateTime.getHours().toString().padStart(2,'0')}:{task.dateTime.getMinutes().toString().padStart(2, '0')}
                 <br/>
                 <br/>
-                <button onClick={handleDeleteButton}>Delete</button>
+                {user.id && user.id === task.userId && <button onClick={handleDeleteButton}>Delete</button>}
             </div>
             <br/>
             <Link to={"/tasks/"}>back to gallery</Link>

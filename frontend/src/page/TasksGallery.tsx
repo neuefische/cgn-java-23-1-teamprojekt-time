@@ -10,7 +10,7 @@ type Props = {
 export default function TasksGallery(props: Props) {
     const user = useAuth(true)
     const taskCards = props.tasks.map((task) => {
-            return <TaskCard key={task.id} task={task}/>
+            return <TaskCard key={task.id} task={task} user={user}/>
         }
     )
     return !user ? null : (

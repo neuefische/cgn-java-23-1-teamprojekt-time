@@ -18,7 +18,7 @@ export default function WeekGallery() {
 
     for (let i = 0; i < 7; i++) {
         daysGallery.push(<DayGallery key={i} year={date.year().toString()} month={(date.month() + 1).toString()}
-                                     day={date.date().toString()}/>)
+                                     day={date.date().toString()} user={user}/>)
         date.add(1, 'd')
     }
 
