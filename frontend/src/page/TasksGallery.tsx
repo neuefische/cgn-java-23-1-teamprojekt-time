@@ -13,7 +13,7 @@ export default function TasksGallery(props: Props) {
             return <TaskCard key={task.id} task={task} user={user}/>
         }
     )
-    return !user ? null : (
+    return !user ? '' : (
         <Layout>
             <h2>All Tasks</h2>
             <section className={"task-gallery"}>
